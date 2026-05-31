@@ -90,4 +90,10 @@ public static boolean isValidBirthdate(String birthdate) {
     return java.time.Period.between(dob, java.time.LocalDate.now()).getYears();
 }
 
+@Override
+public String toString() {
+    return String.format("Driver[ID=%s, Name=%s, Experience=%d years, License=%s, Address=%s, Birthdate=%s]",
+        driverID, name, experienceYears, licenseType, address, birthdate); 
+        }
+
 }
