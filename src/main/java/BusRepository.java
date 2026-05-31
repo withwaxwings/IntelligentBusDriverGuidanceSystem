@@ -83,7 +83,7 @@ private void saveToFile(){
             bw.newLine();
         } 
         }catch(IOException e){
-            throw new RuntimeException("Failed to save busses: " + e.getMessage());
+            throw new RuntimeException("Failed to save buses: " + e.getMessage());
         }
     }
 
