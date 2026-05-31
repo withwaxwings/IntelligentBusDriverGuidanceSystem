@@ -51,6 +51,23 @@ public int count(){
     return buses.size();
 }
 
+public boolean isDriverEligible(Driver driver, Bus bus) {
+    //Driver older than 50 cannot drive buses with capacity >= 50
+    if (driver.getAgeInYears() > 50 && bus.getCapacity() >= 50)
+        return false;
+
+    //Electric bus requires at least 5 years experience
+    if ("Electricity".equals(bus.getFuelType()) && driver.getExperienceYears() < 5)
+        return false;
+
+    //Electric/Hybrid requires Heavy or PublicTransport licence
+    if (("Electricity".equals(bus.getFuelType()) || "Hybrid".equals(bus.getFuelType())) &&
+        !driver.getLicenseType().equals("Heavy") &&
+        !driver.getLicenseType().equals("PublicTransport"))
+        return false;
+
+    return true;
+}
 
 private void saveToFile(){
     try(BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))){
