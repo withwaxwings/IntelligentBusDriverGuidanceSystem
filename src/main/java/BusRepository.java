@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BusRepository {
-    private static final String FILE_PATH = "busrepo.txt";
+    private static final String FILE_PATH = "bus_repository.txt";
     private static final String HEADER = "busID,capacity,fuelLevel,fuelType";
     private List<Bus> buses = new ArrayList<>();
 
