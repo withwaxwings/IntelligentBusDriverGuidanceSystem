@@ -36,11 +36,16 @@ public class Driver{
 
     public static boolean isValidDriverID(String id) {
     if (id == null || id.length() != 10) return false;
-        for (char c: id.toCharArray()) {
-            if(!Character.isDigit(c)) return false;
-        }
-        return true;
+    if (!id.substring(0, 2).matches("[2-9]{2}")) return false;
+    if (!id.substring(8, 10).matches("[A-Z]{2}")) return false;
+    String middle = id.substring(2, 8);
+    int specialCount = 0;
+    for (char c : middle.toCharArray()) {
+        if (!Character.isLetterOrDigit(c)) specialCount++;
     }
+    if (specialCount < 2) return false;
+    return true;
+}
 
 public static boolean isValidBirthdate(String birthdate) {
     if (birthdate == null) return false;
@@ -84,11 +89,5 @@ public static boolean isValidBirthdate(String birthdate) {
     java.time.LocalDate dob = java.time.LocalDate.parse(this.birthdate, fmt);
     return java.time.Period.between(dob, java.time.LocalDate.now()).getYears();
 }
-
-@Override
-public String toString() {
-    return String.format("Driver[ID=%s, Name=%s, Experience=%d years, License=%s, Address=%s, Birthdate=%s]",
-        driverID, name, experienceYears, licenseType, address, birthdate); 
-        }
 
 }
