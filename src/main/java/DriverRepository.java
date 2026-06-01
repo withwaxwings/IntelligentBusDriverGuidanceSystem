@@ -37,14 +37,14 @@ public class DriverRepository {
         return new ArrayList<>(drivers);
     }
 
-    public void update(String driverID, int experienceYears, String licenseType, String address) {
+    public void update(String driverID, int experienceYears, LicenseType licenseType, String address) {
         Driver d = retrieve(driverID);
         if (d == null){
             throw new IllegalArgumentException("Driver not found:" + driverID);
         }
         d.setExperienceYears(experienceYears);
-        d.setLicenseType(licenseType);
-        d.setAddress(address);
+        if (licenseType != null) d.setLicenseType(licenseType);
+        if (address != null)     d.setAddress(address);
         saveToFile();
     }
 
@@ -61,7 +61,7 @@ public class DriverRepository {
                     d.getDriverID(),
                     d.getName(),
                     String.valueOf(d.getExperienceYears()),
-                    d.getLicenseType(),
+                    d.getLicenseType().name(),
                     d.getAddress(),
                     d.getBirthdate()
                 ));
@@ -89,12 +89,12 @@ public class DriverRepository {
                 if (parts.length < 6) continue;
 
                 Driver d = new Driver(
-                    parts[0].trim(), // driverID
-                    parts[1].trim(), // name
-                    Integer.parseInt(parts[2].trim()), // experienceYears
-                    parts[3].trim(), // licenseType
-                    parts[4].trim(), // address
-                    parts[5].trim()  // birthdate
+                    parts[0].trim(),
+                    parts[1].trim(),
+                    Integer.parseInt(parts[2].trim()),
+                    LicenseType.valueOf(parts[3].trim()),
+                    parts[4].trim(),
+                    parts[5].trim()
                 );
                 drivers.add(d);
             }

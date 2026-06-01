@@ -2,11 +2,11 @@ public class Driver{
     private String driverID;
     private String name;
     private int experienceYears;
-    private String licenseType; // Light, Medium, Heavy, PublicTransport
+    private LicenseType licenseType;
     private String address;
     private String birthdate;
 
-    public Driver(String driverID, String name, int experienceYears, String licenseType, String address, String birthdate){
+    public Driver(String driverID, String name, int experienceYears, LicenseType licenseType, String address, String birthdate){
         this.driverID = driverID;
         this.name = name;
         this.experienceYears = experienceYears;
@@ -32,11 +32,11 @@ public class Driver{
         this.experienceYears = experienceYears;
     }
 
-    public String getLicenseType() {
+    public LicenseType getLicenseType() {
         return licenseType;
     }
 
-    public void setLicenseType(String licenseType) {
+    public void setLicenseType(LicenseType licenseType) {
         this.licenseType = licenseType;
     }
 
@@ -50,6 +50,10 @@ public class Driver{
 
     public String getBirthdate() {
         return birthdate;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
     }
 
     @Override
