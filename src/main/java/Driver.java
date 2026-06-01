@@ -36,16 +36,11 @@ public class Driver{
 
     public static boolean isValidDriverID(String id) {
     if (id == null || id.length() != 10) return false;
-    if (!id.substring(0, 2).matches("[2-9]{2}")) return false;
-    if (!id.substring(8, 10).matches("[A-Z]{2}")) return false;
-    String middle = id.substring(2, 8);
-    int specialCount = 0;
-    for (char c : middle.toCharArray()) {
-        if (!Character.isLetterOrDigit(c)) specialCount++;
+        for (char c: id.toCharArray()) {
+            if(!Character.isDigit(c)) return false;
+        }
+        return true;
     }
-    if (specialCount < 2) return false;
-    return true;
-}
 
 public static boolean isValidBirthdate(String birthdate) {
     if (birthdate == null) return false;
