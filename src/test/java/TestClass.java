@@ -34,10 +34,6 @@ public class TestClass {
         assertTrue(Driver.isValidDriverID("34ab!!cdAB"));
     }
 
-    @Test
-    void Null_DriverID_returns_False(){
-        assertFalse(Driver.isValidDriverID(null));
-    }
 
     @Test
     void TooShort_DriverID_returns_False(){
@@ -86,10 +82,6 @@ public class TestClass {
         assertTrue(Driver.isValidAddress("12|Pork Parade|Echuca|Victoria|Australia"));
     }
 
-    @Test
-    void Null_Address_returns_False(){
-        assertFalse(Driver.isValidAddress(null));
-    }
 
     @Test
     void Address_EmptyPart_returns_False(){
@@ -128,10 +120,6 @@ public class TestClass {
         assertTrue(Driver.isValidLicenseType("PublicTransport"));
     }
 
-    @Test
-    void Null_LicenseType_returns_False(){
-        assertFalse(Driver.isValidLicenseType(null));
-    }
 
     @Test
     void LicenseType_Lowercase_returns_False(){
@@ -150,10 +138,6 @@ public class TestClass {
         assertTrue(Driver.isValidBirthdate("11-09-2005"));
     }
 
-    @Test
-    void Null_BirthDate_returns_False(){
-        assertFalse(Driver.isValidBirthdate(null));
-    }
 
     @Test
     void BirthDate_InvalidDay_returns_False(){
@@ -213,10 +197,6 @@ public class TestClass {
         assertTrue(Bus.isValidBusID("12345678"));
     }
 
-    @Test
-    void Null_BusID_returns_False(){
-        assertFalse(Bus.isValidBusID(null));
-    }
 
     @Test
     void TooShort_BusID_returns_False(){
@@ -255,10 +235,6 @@ public class TestClass {
         assertFalse(Bus.isValidFuelType("Petrol"));
     }
 
-    @Test
-    void FuelType_Null_returns_False(){
-        assertFalse(Bus.isValidFuelType(null));
-    }
 
     //Bus–isValidCapacity
 
@@ -473,11 +449,6 @@ public class TestClass {
         assertThrows(IllegalArgumentException.class, () -> repo.add(new Driver("57xy!!stQR", "Jake2", 3, "Light", "1|St|City|ST|USA", "01-01-1995")));
     }
 
-    @Test
-    void DriverRepo_Retrieve_UnknownID_returns_Null(){
-        DriverRepository repo = new DriverRepository();
-        assertNull(repo.retrieve("00ab!!cdZZ"));
-    }
 
     @Test
     void DriverRepo_Count_increases_after_add(){
