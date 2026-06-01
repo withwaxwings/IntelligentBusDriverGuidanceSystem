@@ -36,7 +36,7 @@ public class BusRepository {
         return new ArrayList<>(buses);
     }
 
-    public void update(String busID, int capacity, double fuelLevel, String fuelType) {
+    public void update(String busID, int capacity, double fuelLevel, FuelType fuelType) {
         Bus b = retrieve(busID);
         if (b == null)
             throw new IllegalArgumentException("Bus not found: " + busID);
@@ -59,7 +59,7 @@ public class BusRepository {
                     b.getBusID(),
                     String.valueOf(b.getCapacity()),
                     String.valueOf(b.getFuelLevel()),
-                    b.getFuelType()
+                    b.getFuelType().name()
                 ));
                 bw.newLine();
             }
@@ -85,7 +85,7 @@ public class BusRepository {
                     parts[0].trim(),
                     Integer.parseInt(parts[1].trim()),
                     Double.parseDouble(parts[2].trim()),
-                    parts[3].trim()
+                    FuelType.valueOf(parts[3].trim())
                 ));
             }
         } catch (IOException e) {

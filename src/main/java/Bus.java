@@ -2,9 +2,9 @@ public class Bus {
     private String busID;
     private int capacity;
     private double fuelLevel;
-    private String fuelType; // Diesel, Hybrid, Electricity
+    private FuelType fuelType;
 
-    public Bus(String busID, int capacity, double fuelLevel, String fuelType){
+    public Bus(String busID, int capacity, double fuelLevel, FuelType fuelType){
         this.busID = busID;
         this.capacity = capacity;
         this.fuelLevel = fuelLevel;
@@ -31,11 +31,11 @@ public class Bus {
         this.fuelLevel = fuelLevel;
     }
 
-    public String getFuelType() {
+    public FuelType getFuelType() {
         return fuelType;
     }
 
-    public void setFuelType(String fuelType) {
+    public void setFuelType(FuelType fuelType) {
         this.fuelType = fuelType;
     }
 

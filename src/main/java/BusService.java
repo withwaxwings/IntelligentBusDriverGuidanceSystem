@@ -6,15 +6,13 @@ public class BusService {
         this.busRepository = busRepository;
     }
 
-    public void createBus(String busID, int capacity, double fuelLevel, String fuelType) {
+    public void createBus(String busID, int capacity, double fuelLevel, FuelType fuelType) {
         if (!isValidBusID(busID))
             throw new IllegalArgumentException("Invalid bus ID: " + busID);
         if (!isValidCapacity(capacity))
             throw new IllegalArgumentException("Invalid capacity: " + capacity);
         if (!isValidFuelLevel(fuelLevel))
             throw new IllegalArgumentException("Invalid fuel level: " + fuelLevel);
-        if (!isValidFuelType(fuelType))
-            throw new IllegalArgumentException("Invalid fuel type: " + fuelType);
 
         busRepository.add(new Bus(busID, capacity, fuelLevel, fuelType));
     }
@@ -37,11 +35,6 @@ public class BusService {
         return fuelLevel >= 0.0 && fuelLevel <= 100.0;
     }
 
-    public boolean isValidFuelType(String fuelType) {
-        if (fuelType == null) return false;
-        return fuelType.equals("Diesel") || fuelType.equals("Hybrid") || fuelType.equals("Electricity");
-    }
-
     public void updateCapacity(Bus bus, int capacity) {
         if (!isValidCapacity(capacity))
             throw new IllegalArgumentException("Invalid capacity: " + capacity);
@@ -56,9 +49,7 @@ public class BusService {
         bus.setFuelLevel(fuelLevel);
     }
 
-    public void updateFuelType(Bus bus, String fuelType) {
-        if (!isValidFuelType(fuelType))
-            throw new IllegalArgumentException("Invalid fuel type: " + fuelType);
+    public void updateFuelType(Bus bus, FuelType fuelType) {
         bus.setFuelType(fuelType);
     }
 }

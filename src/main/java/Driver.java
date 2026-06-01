@@ -1,3 +1,7 @@
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+
 public class Driver{
     private String driverID;
     private String name;
@@ -54,6 +58,12 @@ public class Driver{
 
     public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
+    }
+
+    public int getAgeInYears() {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate dateOfBirth = LocalDate.parse(this.birthdate, format);
+        return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
 
     @Override
