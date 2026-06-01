@@ -6,113 +6,90 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 public class BusRepository {
-// Add (), Update (), Retrieve (), Count () functions
-private static final String FILE_PATH = "busrepo.txt";
-private static final String HEADER = "busID,capacity,fuelLevel,fuelType";
-private List<Bus> buses = new ArrayList<>();
+    private static final String FILE_PATH = "bus_repository.txt";
+    private static final String HEADER = "busID,capacity,fuelLevel,fuelType";
+    private List<Bus> buses = new ArrayList<>();
 
-public BusRepository(){
-    loadFromFile();
-}
-
-public void add(Bus bus){
-    for(Bus b: buses){
-        if(b.getBusID().equals(bus.getBusID()))
-         throw new IllegalArgumentException("Duplicate ID:" + bus.getBusID());
-    }
-    buses.add(bus);
-    saveToFile();
-}
-
-public Bus retrieve(String busID){
-    for(Bus b: buses){
-        if(b.getBusID().equals(busID)) return b;
-    }
-    return null;
+    public BusRepository() {
+        loadFromFile();
     }
 
-public List<Bus> retrieveAll(){
-    return new ArrayList<>(buses);
-}
-
-public void update(String busID, int capacity, double fuelLevel, String fuelType){
-    Bus b=retrieve(busID);
-    if(b==null){
-        throw new IllegalArgumentException("Bus not found:" + busID);
+    public void add(Bus newBus) {
+        for (Bus b : buses) {
+            if (b.getBusID().equals(newBus.getBusID()))
+                throw new IllegalArgumentException("Duplicate ID: " + newBus.getBusID());
+        }
+        buses.add(newBus);
+        saveToFile();
     }
-    if(Bus.isValidCapacity(capacity)) { b.setCapacity(capacity);}
-    if(Bus.isValidFuelLevel(fuelLevel)) { b.setFuelLevel(fuelLevel);}
-    if(Bus.isValidFuelType(fuelType)) { b.setFuelType(fuelType);}
-    saveToFile();
-}
 
-public int count(){
-    return buses.size();
-}
+    public Bus retrieve(String busID) {
+        for (Bus b : buses) {
+            if (b.getBusID().equals(busID)) return b;
+        }
+        return null;
+    }
 
-public boolean isDriverEligible(Driver driver, Bus bus) {
-    //Driver older than 50 cannot drive buses with capacity >= 50
-    if (driver.getAgeInYears() > 50 && bus.getCapacity() >= 50)
-        return false;
+    public List<Bus> retrieveAll() {
+        return new ArrayList<>(buses);
+    }
 
-    //Electric bus requires at least 5 years experience
-    if ("Electricity".equals(bus.getFuelType()) && driver.getExperienceYears() < 5)
-        return false;
+    public void update(String busID, int capacity, double fuelLevel, FuelType fuelType) {
+        Bus b = retrieve(busID);
+        if (b == null)
+            throw new IllegalArgumentException("Bus not found: " + busID);
+        b.setCapacity(capacity);
+        b.setFuelLevel(fuelLevel);
+        b.setFuelType(fuelType);
+        saveToFile();
+    }
 
-    //Electric/Hybrid requires Heavy or PublicTransport licence
-    if (("Electricity".equals(bus.getFuelType()) || "Hybrid".equals(bus.getFuelType())) &&
-        !driver.getLicenseType().equals("Heavy") &&
-        !driver.getLicenseType().equals("PublicTransport"))
-        return false;
+    public int count() {
+        return buses.size();
+    }
 
-    return true;
-}
-
-private void saveToFile(){
-    try(BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))){
-        bw.write(HEADER);
-        bw.newLine();
-        for(Bus b: buses){
-            bw.write(String.join(",",
-            b.getBusID(),
-            String.valueOf(b.getCapacity()),
-            String.valueOf(b.getFuelLevel()),
-            b.getFuelType()
-            ));
+    private void saveToFile() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            bw.write(HEADER);
             bw.newLine();
-        } 
-        }catch(IOException e){
+            for (Bus b : buses) {
+                bw.write(String.join(",",
+                    b.getBusID(),
+                    String.valueOf(b.getCapacity()),
+                    String.valueOf(b.getFuelLevel()),
+                    b.getFuelType().name()
+                ));
+                bw.newLine();
+            }
+        } catch (IOException e) {
             throw new RuntimeException("Failed to save buses: " + e.getMessage());
         }
     }
 
+    private void loadFromFile() {
+        File file = new File(FILE_PATH);
+        if (!file.exists()) return;
 
-private void loadFromFile() {
-    File file = new File(FILE_PATH);
-    if (!file.exists()) return;
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            br.readLine(); // skip header
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
 
-    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-        String line;
-        boolean firstLine = true;
-        while ((line = br.readLine()) != null) {
-            if (firstLine) { firstLine = false; continue; }
-            if (line.trim().isEmpty()) continue;
+                String[] parts = line.split(",", 4);
+                if (parts.length < 4) continue;
 
-            String[] parts = line.split(",", 4);
-            if (parts.length < 4) continue;
-
-            Bus b = new Bus(
-                parts[0].trim(),
-                Integer.parseInt(parts[1].trim()),
-                Double.parseDouble(parts[2].trim()),
-                parts[3].trim()
-            );
-            buses.add(b);
+                buses.add(new Bus(
+                    parts[0].trim(),
+                    Integer.parseInt(parts[1].trim()),
+                    Double.parseDouble(parts[2].trim()),
+                    FuelType.valueOf(parts[3].trim())
+                ));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load buses: " + e.getMessage());
         }
-    } catch (IOException e) {
-        throw new RuntimeException("Failed to load buses: " + e.getMessage());
     }
 }
-}
-
