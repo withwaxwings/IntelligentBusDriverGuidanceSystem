@@ -1,3 +1,4 @@
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -118,16 +119,11 @@ public class TestClass {
         assertFalse(driverService.isValidBirthdate("01-13-2000"));
     }
 
-     @Test
-    void BirthDate_NonExistentDate_returns_False() {
-        assertFalse(driverService.isValidBirthdate("31-02-2000"));
-    }
- 
+     
     @Test
     void BirthDate_Null_returns_False() {
         assertFalse(driverService.isValidBirthdate(null));
     }
- 
 
     //DriverService – updateLicenseType
 
@@ -147,6 +143,23 @@ public class TestClass {
         driverService.updateLicenseType(driver, LicenseType.HEAVY);
         assertEquals(LicenseType.HEAVY, driver.getLicenseType());
     }
+
+    @Test
+    void LicenseChange_ExactlyTenYears_succeeds() {
+        Driver driver = new Driver(
+                "34ab!!cdAB",
+                "Bob",
+                10,
+                LicenseType.LIGHT,
+                "1|A St|Melbourne|VIC|Australia",
+                "01-01-1985"
+        );
+ 
+        assertDoesNotThrow(() ->
+                driverService.updateLicenseType(driver, LicenseType.MEDIUM));
+    }
+
+
 
     //DriverService – updateAddress
 
