@@ -59,6 +59,16 @@ public class TestClass {
         assertTrue(driverService.isValidDriverID("34a!!bcdAB"));
     }
 
+     @Test
+    void DriverID_DifferentValidSpecials_returns_True() {
+        assertTrue(driverService.isValidDriverID("56##xyz1ZZ"));
+    }
+ 
+    @Test
+    void DriverID_Null_returns_False() {
+        assertFalse(driverService.isValidDriverID(null));
+    }
+
     //DriverService – isValidAddress
 
     @Test
@@ -79,6 +89,11 @@ public class TestClass {
     @Test
     void Address_SixParts_returns_False() {
         assertFalse(driverService.isValidAddress("12|Pork Parade|Echuca|Victoria|Australia|Extra"));
+    }
+
+    @Test
+    void Address_Null_returns_False() {
+        assertFalse(driverService.isValidAddress(null));
     }
 
     //DriverService – isValidBirthdate
@@ -102,6 +117,17 @@ public class TestClass {
     void BirthDate_InvalidMonth_returns_False() {
         assertFalse(driverService.isValidBirthdate("01-13-2000"));
     }
+
+     @Test
+    void BirthDate_NonExistentDate_returns_False() {
+        assertFalse(driverService.isValidBirthdate("31-02-2000"));
+    }
+ 
+    @Test
+    void BirthDate_Null_returns_False() {
+        assertFalse(driverService.isValidBirthdate(null));
+    }
+ 
 
     //DriverService – updateLicenseType
 
