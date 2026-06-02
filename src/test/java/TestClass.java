@@ -393,6 +393,32 @@ public class TestClass {
     }
 
     @Test
+    void Eligibility_DriverExactlyAge50_CapacityFiftyBus_returns_True() {
+        java.time.LocalDate dob =
+                java.time.LocalDate.now().minusYears(50);
+ 
+        String birthdate = String.format(
+                "%02d-%02d-%04d",
+                dob.getDayOfMonth(),
+                dob.getMonthValue(),
+                dob.getYear()
+        );
+
+        Driver driver = new Driver(
+                "34ab!!cdAB",
+                "Alice",
+                15,
+                LicenseType.HEAVY,
+                "1|St|City|ST|Australia",
+                birthdate
+        );
+ 
+        Bus bus = new Bus("11111118", 50, 80.0, FuelType.DIESEL);
+ 
+        assertTrue(relationService.isDriverEligible(driver, bus));
+    }
+
+    @Test
     void Eligibility_ElectricBus_UnderExperience_returns_False() {
         BusDriverRelationService service =
                 new BusDriverRelationService(new BusDriverRelationRepository());
@@ -410,6 +436,22 @@ public class TestClass {
                 "1|St|City|ST|USA", "01-01-1995");
         Bus bus = new Bus("11111115", 30, 80.0, FuelType.ELECTRICITY);
         assertTrue(service.isDriverEligible(driver, bus));
+    }   
+
+      @Test
+    void Eligibility_ElectricBus_ExactlyFiveYears_returns_True() {
+        Driver driver = new Driver(
+                "34ab!!cdAB",
+                "Bob",
+                5,
+                LicenseType.HEAVY,
+                "1|St|City|ST|Australia",
+                "01-01-1995"
+        );
+ 
+        Bus bus = new Bus("11111119", 30, 80.0, FuelType.ELECTRICITY);
+ 
+        assertTrue(relationService.isDriverEligible(driver, bus));
     }
 
     @Test
@@ -420,6 +462,22 @@ public class TestClass {
                 "1|St|City|ST|USA", "01-01-1995");
         Bus bus = new Bus("11111116", 30, 80.0, FuelType.HYBRID);
         assertFalse(service.isDriverEligible(driver, bus));
+    }
+
+    @Test
+    void Eligibility_HybridBus_MediumLicense_returns_False() {
+        Driver driver = new Driver(
+                "34ab!!cdAB",
+                "Carol",
+                8,
+                LicenseType.MEDIUM,
+                "1|St|City|ST|Australia",
+                "01-01-1990"
+        );
+ 
+        Bus bus = new Bus("11111120", 30, 80.0, FuelType.HYBRID);
+ 
+        assertFalse(relationService.isDriverEligible(driver, bus));
     }
 
     @Test
