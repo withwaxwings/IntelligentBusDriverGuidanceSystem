@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 public class TestClass {
+    private final DriverService driverService = new DriverService(new DriverRepository());
+    private final BusService busService = new BusService(new BusRepository());
     @Test
     void TestFunction(){
         boolean iAmTrue = true;
