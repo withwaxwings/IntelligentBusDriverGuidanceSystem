@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 
 public class TestClass {
@@ -521,4 +522,123 @@ public class TestClass {
                 "1|St|City|ST|USA", "01-01-1995"));
         assertEquals(before + 1, repo.count());
     }
+
+    //Integration Tests – DriverRepository
+ 
+    @Test
+    void DriverRepo_ValidDriver_StoredAndRetrievedCorrectly() { 
+        DriverRepository repo =
+                new DriverRepository();
+ 
+        Driver driver = new Driver(
+                "34ab!!cdAB",
+                "Alice Smith",
+                5,
+                LicenseType.HEAVY,
+                "10|Park Rd|Melbourne|VIC|Australia",
+                "15-03-1990"
+        );
+ 
+        repo.add(driver);
+ 
+        Driver retrieved =
+                repo.retrieve("34ab!!cdAB");
+ 
+        assertNotNull(retrieved);
+ 
+        assertEquals("Alice Smith",
+                retrieved.getName());
+    }
+ 
+    @Test
+    void DriverRepo_Update_PersistedCorrectlyAfterReload() { 
+        DriverRepository repo =
+                new DriverRepository();
+ 
+        int before = repo.count();
+ 
+        repo.add(new Driver(
+                "56cd!!efGH",
+                "Carol White",
+                4,
+                LicenseType.MEDIUM,
+                "1|Old St|Brisbane|QLD|Australia",
+                "20-11-1992"
+        ));
+ 
+        repo.update(
+                "56cd!!efGH",
+                4,
+                LicenseType.MEDIUM,
+                "99|New Blvd|Perth|WA|Australia"
+        );
+ 
+        DriverRepository reloaded =
+                new DriverRepository();
+ 
+        assertEquals(before + 1,
+                reloaded.count());
+ 
+        assertEquals(
+                "99|New Blvd|Perth|WA|Australia",
+                reloaded.retrieve("56cd!!efGH").getAddress()
+        );
+    }
+ 
+    //Integration Tests – BusRepository
+ 
+    @Test
+    void BusRepo_ValidBus_StoredAndRetrievedCorrectly() {
+        BusRepository repo =
+                new BusRepository();
+ 
+        Bus bus = new Bus(
+                "77777771",
+                45,
+                75.0,
+                FuelType.DIESEL
+        );
+ 
+        repo.add(bus);
+ 
+        Bus retrieved =
+                repo.retrieve("77777771");
+ 
+        assertNotNull(retrieved);
+ 
+        assertEquals(45,
+                retrieved.getCapacity());
+    }
+ 
+    @Test
+    void BusRepo_Update_PersistedCorrectlyAfterReload() {
+        BusRepository repo =
+                new BusRepository();
+ 
+        int before = repo.count();
+ 
+        repo.add(new Bus(
+                "77777772",
+                60,
+                90.0,
+                FuelType.DIESEL
+        ));
+ 
+        repo.update(
+                "77777772",
+                50,
+                70.0,
+                FuelType.DIESEL
+        );
+ 
+        BusRepository reloaded =
+                new BusRepository();
+ 
+        assertEquals(before + 1,
+                reloaded.count());
+ 
+        assertEquals(50,
+                reloaded.retrieve("77777772").getCapacity());
+    }
+
 }
