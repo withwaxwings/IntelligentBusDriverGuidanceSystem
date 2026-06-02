@@ -12,6 +12,7 @@ public class TestClass {
     // Reusable service instances (stateless validators)
     private final DriverService driverService = new DriverService(new DriverRepository());
     private final BusService busService = new BusService(new BusRepository());
+    private final BusDriverRelationService relationService = new BusDriverRelationService(new BusDriverRelationRepository());
 
     @Test
     void TestFunction() {
