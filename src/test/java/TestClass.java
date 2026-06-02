@@ -179,6 +179,53 @@ public class TestClass {
                 () -> driverService.updateAddress(driver, "Bad Address"));
     }
 
+    // Driver - Immutable fields
+
+    @Test
+    void DriverID_Immutable_returns_OriginalValue() {
+        Driver driver = new Driver(
+                "34ab!!cdAB",
+                "Dave",
+                3,
+                LicenseType.LIGHT,
+                "1|A St|Melbourne|VIC|Australia",
+                "01-01-2000"
+        );
+ 
+        assertEquals("34ab!!cdAB",
+                driver.getDriverID());
+    }
+
+    @Test
+    void Name_Immutable_returns_OriginalValue() {
+        Driver driver = new Driver(
+                "34ab!!cdAB",
+                "Eve",
+                3,
+                LicenseType.LIGHT,
+                "1|A St|Melbourne|VIC|Australia",
+                "01-01-2000"
+        );
+ 
+        assertEquals("Eve",
+                driver.getName());
+    }
+ 
+    @Test
+    void Driver_NoSetDriverID_or_SetName_methods() {
+        boolean hasMutableSetter = false;
+        for (java.lang.reflect.Method m : Driver.class.getMethods()) {
+            if (m.getName().equals("setDriverID") ||
+                    m.getName().equals("setName")) {
+                hasMutableSetter = true;
+                break;
+            }
+        }
+ 
+        assertFalse(hasMutableSetter);
+    }
+
+
     //BusService – isValidBusID
 
     @Test
