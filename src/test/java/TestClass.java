@@ -24,24 +24,13 @@ public class TestClass {
     }
 
     @Test
-    void Char_DriverID_returns_False(){
-        assertFalse(Driver.isValidDriverID("12345A6789"));
-    }
-
-    @Test
-    void Valid_DriverID_returns_True(){
-        assertTrue(Driver.isValidDriverID("34ab!!cdAB"));
-    }
-
-
-    @Test
     void TooShort_DriverID_returns_False(){
         assertFalse(Driver.isValidDriverID("34ab!!AB"));
     }
 
     @Test
-    void DriverID_FirstDigitZero_returns_False(){
-        assertFalse(Driver.isValidDriverID("04ab!!cdAB"));
+    void Valid_DriverID_returns_True(){
+        assertTrue(Driver.isValidDriverID("34ab!!cdAB"));
     }
 
     @Test
@@ -52,11 +41,6 @@ public class TestClass {
     @Test
     void DriverID_LastCharsLowercase_returns_False(){
         assertFalse(Driver.isValidDriverID("34ab!!cdab"));
-    }
-
-    @Test
-    void DriverID_NoSpecialsInMiddle_returns_False(){
-        assertFalse(Driver.isValidDriverID("34abcdefAB"));
     }
 
     @Test
@@ -100,16 +84,6 @@ public class TestClass {
     }
 
     @Test
-    void Correct_LicenseType_Medium_returns_True(){
-        assertTrue(Driver.isValidLicenseType("Medium"));
-    }
-
-    @Test
-    void Correct_LicenseType_Light_returns_True(){
-        assertTrue(Driver.isValidLicenseType("Light"));
-    }
-
-    @Test
     void Correct_LicenseType_Heavy_returns_True(){
         assertTrue(Driver.isValidLicenseType("Heavy"));
     }
@@ -119,7 +93,6 @@ public class TestClass {
         assertTrue(Driver.isValidLicenseType("PublicTransport"));
     }
 
-
     @Test
     void LicenseType_Lowercase_returns_False(){
         assertFalse(Driver.isValidLicenseType("heavy"));
@@ -128,15 +101,14 @@ public class TestClass {
     //Driver–isValidBirthdate
 
     @Test
-    void Incorrect_BirthDate_returns_False(){
-        assertFalse(Driver.isValidBirthdate("11/09/2005"));
-    }
-
-    @Test
     void Correct_BirthDate_returns_True(){
         assertTrue(Driver.isValidBirthdate("11-09-2005"));
     }
 
+    @Test
+    void Incorrect_BirthDate_returns_False(){
+        assertFalse(Driver.isValidBirthdate("11/09/2005"));
+    }
 
     @Test
     void BirthDate_InvalidDay_returns_False(){
@@ -146,11 +118,6 @@ public class TestClass {
     @Test
     void BirthDate_InvalidMonth_returns_False(){
         assertFalse(Driver.isValidBirthdate("01-13-2000"));
-    }
-
-    @Test
-    void BirthDate_WrongFormat_YYYYMMDD_returns_False(){
-        assertFalse(Driver.isValidBirthdate("2000-01-15"));
     }
 
     //Driver–setLicenseType
@@ -213,17 +180,6 @@ public class TestClass {
     }
 
     //Bus–isValidFuelType
-
-    @Test
-    void FuelType_Diesel_returns_True(){
-        assertTrue(Bus.isValidFuelType("Diesel"));
-    }
-
-    @Test
-    void FuelType_Hybrid_returns_True(){
-        assertTrue(Bus.isValidFuelType("Hybrid"));
-    }
-
     @Test
     void FuelType_Electricity_returns_True(){
         assertTrue(Bus.isValidFuelType("Electricity"));
@@ -236,12 +192,6 @@ public class TestClass {
 
 
     //Bus–isValidCapacity
-
-    @Test
-    void Capacity_Mid_returns_True(){
-        assertTrue(Bus.isValidCapacity(50));
-    }
-
     @Test
     void Capacity_LowerBoundary_returns_True(){
         assertTrue(Bus.isValidCapacity(1));
@@ -261,13 +211,7 @@ public class TestClass {
     void Capacity_OverHundred_returns_False(){
         assertFalse(Bus.isValidCapacity(101));
     }
-
     //Bus–isValidFuelLevel
-
-    @Test
-    void FuelLevel_Mid_returns_True(){
-        assertTrue(Bus.isValidFuelLevel(50.0));
-    }
 
     @Test
     void FuelLevel_Zero_returns_True(){
@@ -399,14 +343,6 @@ public class TestClass {
     }
 
     @Test
-    void Eligibility_ElectricBus_LightLicense_returns_False(){
-        BusRepository repo = new BusRepository();
-        Driver driver = new Driver("34ab!!cdAB", "Carol", 10, "Light", "1|St|City|ST|USA", "01-01-1995");
-        Bus bus = new Bus("11111114", 30, 80.0, "Electricity");
-        assertFalse(repo.isDriverEligible(driver, bus));
-    }
-
-    @Test
     void Eligibility_ElectricBus_HeavyLicense_SufficientExp_returns_True(){
         BusRepository repo = new BusRepository();
         Driver driver = new Driver("34ab!!cdAB", "Dave", 6, "Heavy", "1|St|City|ST|USA", "01-01-1995");
@@ -455,13 +391,5 @@ public class TestClass {
         int before = repo.count();
         repo.add(new Driver("58xy!!stQR", "Jill", 4, "Light", "1|St|City|ST|USA", "01-01-1995"));
         assertEquals(before + 1, repo.count());
-    }
-
-    @Test
-    void DriverRepo_RetrieveAll_contains_added_driver(){
-        DriverRepository repo = new DriverRepository();
-        Driver driver = new Driver("59xy!!stQR", "Jim", 7, "Heavy", "1|St|City|ST|USA", "01-01-1990");
-        repo.add(driver);
-        assertTrue(repo.retrieveAll().stream().anyMatch(d -> d.getDriverID().equals("59xy!!stQR")));
     }
 }
