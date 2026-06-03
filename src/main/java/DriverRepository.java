@@ -54,11 +54,12 @@ public class DriverRepository {
      * Updates the fields of an existing driver and persists the change.
      * @param driverID the ID of the driver to update
      * @param experienceYears updated years of experience (ignored if null)
-     * @param licenseType updated license type (ignored if null)
-     * @param address updated address (ignored if null)
+     * @param licenseType     updated license type (ignored if null)
+     * @param address         updated address (ignored if null)
+     * @param birthdate       updated birthdate in dd-MM-yyyy format (ignored if null)
      * @throws IllegalArgumentException if no driver with the given ID exists
      */
-    public void update(String driverID, Integer experienceYears, LicenseType licenseType, String address) {
+    public void update(String driverID, Integer experienceYears, LicenseType licenseType, String address, String birthdate) {
         Driver d = retrieve(driverID);
         if (d == null){
             throw new IllegalArgumentException("Driver not found:" + driverID);
@@ -66,6 +67,7 @@ public class DriverRepository {
         if (experienceYears != null) d.setExperienceYears(experienceYears);
         if (licenseType != null) d.setLicenseType(licenseType);
         if (address != null) d.setAddress(address);
+        if (birthdate != null) d.setBirthdate(birthdate);
         saveToFile();
     }
 
