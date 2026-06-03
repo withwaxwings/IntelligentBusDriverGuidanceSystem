@@ -93,4 +93,11 @@ public class BusService {
     public void updateFuelType(Bus bus, FuelType fuelType) {
         bus.setFuelType(fuelType);
     }
+
+    /**
+     * Saves the current in-memory state of the repository to file.
+     */
+    public void save() {
+        busRepository.save();
+    }
 }

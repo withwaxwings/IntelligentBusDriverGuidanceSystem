@@ -75,6 +75,13 @@ public class BusRepository {
     }
 
     /**
+     * Saves the current in-memory state to file.
+     */
+    public void save() {
+        saveToFile();
+    }
+
+    /**
      * Removes all buses from the repository and clears the file.
      */
     public void clear() {

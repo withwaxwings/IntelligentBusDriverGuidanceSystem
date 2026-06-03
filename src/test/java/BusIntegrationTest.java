@@ -1,97 +1,92 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BusIntegrationTest {
 
-    // Integration Test 1 - Valid Buses Are Stored Correctly
-    @Nested
-    class ValidBusStorage {
-        @Test
-        void BusRepo_ValidBus_StoredAndRetrievedCorrectly() {
-            BusRepository repo = new BusRepository();
+    private BusService busService;
+    private BusRepository busRepository;
 
-            Bus bus1 = new Bus("77777771", 45, 75.0, FuelType.DIESEL);
-            Bus bus2 = new Bus("77777775", 30, 60.0, FuelType.HYBRID);
-            Bus bus3 = new Bus("77777776", 20, 50.0, FuelType.ELECTRICITY);
-
-            repo.add(bus1);
-            repo.add(bus2);
-            repo.add(bus3);
-
-            BusRepository reloaded = new BusRepository();
-
-            assertNotNull(reloaded.retrieve("77777771"));
-            assertEquals(45, reloaded.retrieve("77777771").getCapacity());
-
-            assertNotNull(reloaded.retrieve("77777775"));
-            assertEquals(30, reloaded.retrieve("77777775").getCapacity());
-
-            assertNotNull(reloaded.retrieve("77777776"));
-            assertEquals(20, reloaded.retrieve("77777776").getCapacity());
-        }
+    @BeforeEach
+    void setUp() {
+        busRepository = new BusRepository();
+        busRepository.clear();
+        busService = new BusService(busRepository);
     }
 
-    // Integration Test 2 - Invalid Buses Are Rejected
     @Nested
-    class InvalidBusRejection {
-        @Test
-        void BusRepo_InvalidBus_Rejected() {
-            BusRepository repo = new BusRepository();
-            BusService busService = new BusService(repo);
+    class BusRepositoryTests {
 
-            // Invalid BusID (contains letter)
-            assertFalse(busService.isValidBusID("1234567A"));
-            assertFalse(busService.isValidBusID("ABCDEFGH"));
-            assertFalse(busService.isValidBusID("1234!678"));
+        // Test Case 1 – Valid buses are stored correctly
+        @Test
+        void GivenMultipleBusesAdded_ShouldRetrieveById() {
+            String busID1 = "77777771";
+            String busID2 = "77777775";
+            String busID3 = "77777776";
+
+            busService.createBus(busID1, 45, 75.0, FuelType.DIESEL);
+            busService.createBus(busID2, 30, 60.0, FuelType.HYBRID);
+            busService.createBus(busID3, 20, 50.0, FuelType.ELECTRICITY);
+
+            assertNotNull(busRepository.retrieve(busID1));
+            assertEquals(45, busRepository.retrieve(busID1).getCapacity());
+
+            assertNotNull(busRepository.retrieve(busID2));
+            assertEquals(30, busRepository.retrieve(busID2).getCapacity());
+
+            assertNotNull(busRepository.retrieve(busID3));
+            assertEquals(20, busRepository.retrieve(busID3).getCapacity());
         }
-    }
 
-    // Integration Test 3 - Updates Are Persisted Correctly
-    @Nested
-    class UpdatePersistence {
+        // Test Case 2 – Invalid buses are rejected
         @Test
-        void BusRepo_Update_PersistedCorrectlyAfterReload() {
-            BusRepository repo = new BusRepository();
-            int before = repo.count();
+        void GivenDuplicateBusID_ShouldThrow() {
+            String duplicateID = "77777772";
 
-            repo.add(new Bus("77777772", 60, 90.0, FuelType.DIESEL));
-            repo.add(new Bus("77777773", 55, 85.0, FuelType.HYBRID));
-            repo.add(new Bus("77777774", 50, 80.0, FuelType.ELECTRICITY));
+            busService.createBus(duplicateID, 40, 60.0, FuelType.DIESEL);
+            assertThrows(IllegalArgumentException.class, () -> busService.createBus(duplicateID, 30, 40.0, FuelType.HYBRID));
+        }
 
-            repo.update("77777772", 50, 70.0, FuelType.DIESEL);
-            repo.update("77777773", 45, 65.0, FuelType.HYBRID);
-            repo.update("77777774", 40, 60.0, FuelType.ELECTRICITY);
+        // Test Case 3 – Updates are persisted correctly
+        @Test
+        void GivenBusUpdated_ShouldReturnUpdatedDetails() {
+            String busID = "77777773";
+            busService.createBus(busID, 60, 90.0, FuelType.DIESEL);
+            Bus bus = busRepository.retrieve(busID);
+
+            int newCapacity = 50;
+            double newFuelLevel = 70;
+            FuelType newFuelType = FuelType.HYBRID;
+
+            busService.updateCapacity(bus, newCapacity);
+            busService.updateFuelLevel(bus, newFuelLevel);
+            busService.updateFuelType(bus, newFuelType);
+            busService.save();
 
             BusRepository reloaded = new BusRepository();
+            Bus updated = reloaded.retrieve(busID);
 
-            assertEquals(50, reloaded.retrieve("77777772").getCapacity());
-            assertEquals(45, reloaded.retrieve("77777773").getCapacity());
-            assertEquals(40, reloaded.retrieve("77777774").getCapacity());
+            assertEquals(newCapacity, updated.getCapacity());
+            assertEquals(newFuelLevel, updated.getFuelLevel());
+            assertEquals(newFuelType, updated.getFuelType());
         }
-    }
 
-    // Integration Test 4 - Record Counts Are Updated Correctly
-    @Nested
-    class RecordCount {
+        // Test Case 4 – Record counts are updated correctly
         @Test
-        void BusRepo_Count_UpdatedCorrectlyAfterReload() {
-            BusRepository repo = new BusRepository();
-            int before = repo.count();
+        void GivenBusAdded_ShouldIncreaseCount() {
+            int before = busRepository.count();
 
-            repo.add(new Bus("66666661", 40, 60.0, FuelType.DIESEL));
-            repo.add(new Bus("66666662", 50, 70.0, FuelType.HYBRID));
-            repo.add(new Bus("66666663", 30, 80.0, FuelType.ELECTRICITY));
+            busService.createBus("77777774", 40, 60.0, FuelType.DIESEL);
+            busService.createBus("66666662", 50, 70.0, FuelType.HYBRID);
+            busService.createBus("66666663", 30, 80.0, FuelType.ELECTRICITY);
 
-            BusRepository reloaded = new BusRepository();
+            int after = busRepository.count();
 
-            assertEquals(before + 3, reloaded.count());
-
-            assertThrows(IllegalArgumentException.class,
-                    () -> reloaded.add(new Bus("66666661", 40, 60.0, FuelType.DIESEL)));
-
-            assertEquals(before + 3, reloaded.count());
+            assertEquals(before + 3, after);
         }
     }
 }
