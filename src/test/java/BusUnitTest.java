@@ -235,47 +235,65 @@ public class BusUnitTest {
     class ValidDriverLicence {
         String address = "124 | La Trobe St | Melbourne | Victoria | Australia";
 
-        // Test Case 1 - Light License on Hybrid Bus
+        // Test Case 1 - Light/Medium License on Hybrid Bus
         @Test
-        void GivenHybridBusLightLicense_ShouldReject() {
-            Driver driver1 = new Driver("34ab!!cdAB", "Alice", 10, LicenseType.LIGHT, address, "01-01-1995");
-            Driver driver2 = new Driver("34ab!!cdAC", "Bob", 8, LicenseType.LIGHT, address, "01-01-1990");
-            Driver driver3 = new Driver("34ab!!cdAD", "Carol", 6, LicenseType.LIGHT, address, "01-01-1985");
-            Bus bus1 = new Bus("11111116", 30, 80.0, FuelType.HYBRID);
-            Bus bus2 = new Bus("11111133", 30, 80.0, FuelType.HYBRID);
-            Bus bus3 = new Bus("11111134", 30, 80.0, FuelType.HYBRID);
-            assertFalse(relationService.isDriverEligible(driver1, bus1));
-            assertFalse(relationService.isDriverEligible(driver2, bus2));
-            assertFalse(relationService.isDriverEligible(driver3, bus3));
-        }
-
-        // Test Case 2 - Medium License on Hybrid Bus
-        @Test
-        void GivenHybridBusMediumLicense_ShouldReject() {
-            Driver driver1 = new Driver("34ab!!cdAB", "Alice", 8, LicenseType.MEDIUM, address, "01-01-1990");
+        void GivenHybridBusLightOrMediumLicense_ShouldReject() {
+            Driver driver1 = new Driver("34ab!!cdAB", "Alice", 8, LicenseType.LIGHT, address, "01-01-1990");
             Driver driver2 = new Driver("34ab!!cdAC", "Bob", 6, LicenseType.MEDIUM, address, "01-01-1988");
-            Driver driver3 = new Driver("34ab!!cdAD", "Carol", 4, LicenseType.MEDIUM, address, "01-01-1985");
             Bus bus1 = new Bus("11111120", 30, 80.0, FuelType.HYBRID);
             Bus bus2 = new Bus("11111135", 30, 80.0, FuelType.HYBRID);
-            Bus bus3 = new Bus("11111136", 30, 80.0, FuelType.HYBRID);
             assertFalse(relationService.isDriverEligible(driver1, bus1));
             assertFalse(relationService.isDriverEligible(driver2, bus2));
-            assertFalse(relationService.isDriverEligible(driver3, bus3));
         }
 
-        // Test Case 3 - Light License on Diesel Bus
+        // Test Case 2 - Heavy/Public Transport License on Hybrid Bus
         @Test
-        void GivenDieselBusLightLicense_ShouldAccept() {
-            String address = "124 | La Trobe St | Melbourne | Victoria | Australia";
+        void GivenHybridBusHeavyOrPublicLicense_ShouldAccept() {
+            Driver driver1 = new Driver("34ab!!cdAB", "Alice", 5, LicenseType.HEAVY, address, "01-01-1990");
+            Driver driver2 = new Driver("34ab!!cdAC", "Bob", 5, LicenseType.PUBLIC_TRANSPORT, address, "01-01-1990");
+            Bus bus1 = new Bus("11111142", 30, 80.0, FuelType.HYBRID);
+            Bus bus2 = new Bus("11111143", 30, 80.0, FuelType.HYBRID);
+            assertTrue(relationService.isDriverEligible(driver1, bus1));
+            assertTrue(relationService.isDriverEligible(driver2, bus2));
+        }
+
+        // Test Case 3 - Light/Medium License on Electric Bus
+        @Test
+        void GivenElectricBusLightOrMediumLicense_ShouldReject() {
+            Driver driver1 = new Driver("34ab!!cdAB", "Alice", 10, LicenseType.LIGHT, address, "01-01-1990");
+            Driver driver2 = new Driver("34ab!!cdAC", "Bob", 10, LicenseType.MEDIUM, address, "01-01-1990");
+            Bus bus1 = new Bus("11111139", 30, 80.0, FuelType.ELECTRICITY);
+            Bus bus2 = new Bus("11111140", 30, 80.0, FuelType.ELECTRICITY);
+            assertFalse(relationService.isDriverEligible(driver1, bus1));
+            assertFalse(relationService.isDriverEligible(driver2, bus2));
+        }
+
+        // Test Case 4 - Heavy/Public Transport License on Electric Bus
+        @Test
+        void GivenElectricBusHeavyOrPublicLicense_ShouldAccept() {
+            Driver driver1 = new Driver("34ab!!cdAB", "Alice", 5, LicenseType.HEAVY, address, "01-01-1990");
+            Driver driver2 = new Driver("34ab!!cdAC", "Bob", 5, LicenseType.PUBLIC_TRANSPORT, address, "01-01-1990");
+            Bus bus1 = new Bus("11111144", 30, 80.0, FuelType.ELECTRICITY);
+            Bus bus2 = new Bus("11111145", 30, 80.0, FuelType.ELECTRICITY);
+            assertTrue(relationService.isDriverEligible(driver1, bus1));
+            assertTrue(relationService.isDriverEligible(driver2, bus2));
+        }
+
+        // Test Case 5 - Any License on Diesel Bus
+        @Test
+        void GivenDieselBusAnyLicense_ShouldAccept() {
             Driver driver1 = new Driver("34ab!!cdAB", "Alice", 2, LicenseType.LIGHT, address, "01-01-1995");
-            Driver driver2 = new Driver("34ab!!cdAC", "Bob", 4, LicenseType.LIGHT, address, "01-01-1990");
-            Driver driver3 = new Driver("34ab!!cdAD", "Carol", 6, LicenseType.LIGHT, address, "01-01-1985");
+            Driver driver2 = new Driver("34ab!!cdAC", "Bob", 4, LicenseType.MEDIUM, address, "01-01-1990");
+            Driver driver3 = new Driver("34ab!!cdAD", "Carol", 6, LicenseType.HEAVY, address, "01-01-1985");
+            Driver driver4 = new Driver("34ab!!cdAE", "Danny", 6, LicenseType.PUBLIC_TRANSPORT, address, "01-01-1980");
             Bus bus1 = new Bus("11111117", 30, 80.0, FuelType.DIESEL);
             Bus bus2 = new Bus("11111137", 30, 80.0, FuelType.DIESEL);
             Bus bus3 = new Bus("11111138", 30, 80.0, FuelType.DIESEL);
+            Bus bus4 = new Bus("11111146", 30, 80.0, FuelType.DIESEL);
             assertTrue(relationService.isDriverEligible(driver1, bus1));
             assertTrue(relationService.isDriverEligible(driver2, bus2));
             assertTrue(relationService.isDriverEligible(driver3, bus3));
+            assertTrue(relationService.isDriverEligible(driver4, bus4));
         }
     }
 }
