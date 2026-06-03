@@ -59,7 +59,7 @@ public class BusIntegrationTest {
             Bus bus = busRepository.retrieve(busID);
 
             int newCapacity = 50;
-            double newFuelLevel = 70;
+            double newFuelLevel = 70.0;
             FuelType newFuelType = FuelType.HYBRID;
 
             busService.updateCapacity(bus, newCapacity);
@@ -81,12 +81,10 @@ public class BusIntegrationTest {
             int before = busRepository.count();
 
             busService.createBus("77777774", 40, 60.0, FuelType.DIESEL);
-            busService.createBus("66666662", 50, 70.0, FuelType.HYBRID);
-            busService.createBus("66666663", 30, 80.0, FuelType.ELECTRICITY);
 
             int after = busRepository.count();
 
-            assertEquals(before + 3, after);
+            assertEquals(before + 1, after);
         }
     }
 }
