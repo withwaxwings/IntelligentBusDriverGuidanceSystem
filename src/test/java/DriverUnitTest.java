@@ -8,7 +8,7 @@ public class DriverUnitTest {
 
     private final DriverService driverService = new DriverService(new DriverRepository());
 
-    // D1 - Valid DriverID
+    // D1 - Driver ID Rules
     @Nested
     class ValidDriverID{
         // Test Case 1 – Valid DriverID
@@ -110,7 +110,7 @@ public class DriverUnitTest {
         }
     }
 
-    // D3 - isValidBirthdate
+    // D3 - Birthdate Format
     @Nested
     class ValidBirthDate {
         // Test Case 1 – Valid Birthdate
@@ -153,4 +153,15 @@ public class DriverUnitTest {
         }
     }
 
+    // D4 - License Update Restriction
+    @Nested
+    class UpdateLicense{
+
+    }
+
+    // D5 - Immutable Fields
+    @Nested
+    class ImmutableFields{
+
+    }
 }
