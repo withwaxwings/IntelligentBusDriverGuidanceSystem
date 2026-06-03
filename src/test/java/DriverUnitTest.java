@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +11,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DriverUnitTest {
 
-    private final DriverService driverService = new DriverService(new DriverRepository());
+    private DriverService driverService;
+
+    @BeforeEach
+    void setUp(){
+        driverService = new DriverService(new DriverRepository());
+    }
 
     // D1 - Driver ID Rules
     @Nested
