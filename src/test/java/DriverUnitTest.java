@@ -61,7 +61,7 @@ public class DriverUnitTest {
 
         // Test Case 7 – Empty and Null Input
         @Test
-        void GivenEmpty_ShouldReject() {
+        void GivenEmptyOrNull_ShouldReject() {
             assertFalse(driverService.isValidDriverID(""));
             assertFalse(driverService.isValidDriverID(null));
         }
