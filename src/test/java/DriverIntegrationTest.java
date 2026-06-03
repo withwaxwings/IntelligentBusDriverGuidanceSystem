@@ -51,8 +51,7 @@ public class DriverIntegrationTest {
             String duplicateID = "34ab!!cdAB";
 
             driverService.createDriver(duplicateID, "Aaron", 5, LicenseType.HEAVY, address, birthDate);
-            assertThrows(IllegalArgumentException.class,
-                    () -> driverService.createDriver(duplicateID, "Alex", 3, LicenseType.LIGHT, address, birthDate));
+            assertThrows(IllegalArgumentException.class, () -> driverService.createDriver(duplicateID, "Alex", 3, LicenseType.LIGHT, address, birthDate));
         }
 
         // Test Case 3 – Driver updates are persistent
@@ -71,7 +70,9 @@ public class DriverIntegrationTest {
             driverService.updateLicenseType(driver, LicenseType.PUBLIC_TRANSPORT);
             driverService.updateExperienceYears(driver, newExperience);
 
-            Driver updated = driverRepository.retrieve(driverID);
+            DriverRepository reloaded = new DriverRepository();
+            Driver updated = reloaded.retrieve(driverID);
+
             assertEquals(newBirthdate, updated.getBirthdate());
             assertEquals(newAddress, updated.getAddress());
             assertEquals(LicenseType.PUBLIC_TRANSPORT, updated.getLicenseType());
@@ -83,7 +84,7 @@ public class DriverIntegrationTest {
         void GivenDriverAdded_CountShouldIncreaseByOne() {
             int before = driverRepository.count();
 
-            driverRepository.add(new Driver("34ab!!cdAB", "Aaron", 4, LicenseType.HEAVY, address, birthDate));
+            driverService.createDriver("34ab!!cdAB", "Aaron", 4, LicenseType.HEAVY, address, birthDate);
 
             int after = driverRepository.count();
 
