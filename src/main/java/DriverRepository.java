@@ -68,6 +68,12 @@ public class DriverRepository {
         if (licenseType != null) d.setLicenseType(licenseType);
         if (address != null) d.setAddress(address);
         if (birthdate != null) d.setBirthdate(birthdate);
+    }
+
+    /**
+     * Saves the current in-memory state to file.
+     */
+    public void save() {
         saveToFile();
     }
 

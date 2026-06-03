@@ -69,6 +69,7 @@ public class DriverIntegrationTest {
             driverService.updateAddress(driver, newAddress);
             driverService.updateLicenseType(driver, LicenseType.PUBLIC_TRANSPORT);
             driverService.updateExperienceYears(driver, newExperience);
+            driverService.save();
 
             DriverRepository reloaded = new DriverRepository();
             Driver updated = reloaded.retrieve(driverID);

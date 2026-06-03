@@ -99,7 +99,6 @@ public class DriverService {
      */
     public void updateExperienceYears(Driver driver, int experienceYears) {
         driver.setExperienceYears(experienceYears);
-        driverRepository.update(driver.getDriverID(), experienceYears, null, null, null);
     }
 
     /**
@@ -113,7 +112,6 @@ public class DriverService {
         if (driver.getExperienceYears() > 10)
             throw new IllegalArgumentException("Driver with more than 10 years of experience cannot change license type");
         driver.setLicenseType(licenseType);
-        driverRepository.update(driver.getDriverID(), null, licenseType, null, null);
     }
 
     /**
@@ -126,7 +124,6 @@ public class DriverService {
         if (!isValidAddress(address))
             throw new IllegalArgumentException("Invalid address format");
         driver.setAddress(address);
-        driverRepository.update(driver.getDriverID(), null, null, address, null);
     }
 
     /**
@@ -139,6 +136,12 @@ public class DriverService {
         if (!isValidBirthdate(birthdate))
             throw new IllegalArgumentException("Invalid birthdate format");
         driver.setBirthdate(birthdate);
-        driverRepository.update(driver.getDriverID(), null, null, null, birthdate);
+    }
+
+    /**
+     * Saves the current in-memory state of the repository to file.
+     */
+    public void save() {
+        driverRepository.save();
     }
 }
