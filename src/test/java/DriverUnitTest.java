@@ -74,7 +74,7 @@ public class DriverUnitTest {
         @Test
         void GivenValidAddress_ShouldAccept() {
             assertTrue(driverService.isValidAddress("124 | La Trobe St | Melbourne | Victoria | Australia"));
-            assertTrue(driverService.isValidAddress("9 | Nicholson St | Carlton | Victoria|Australia"));
+            assertTrue(driverService.isValidAddress("9      |      Nicholson St | Carlton | Victoria|Australia"));
             assertTrue(driverService.isValidAddress("1341|Dandenong Rd|Malvern East|Victoria|Australia"));
         }
 
