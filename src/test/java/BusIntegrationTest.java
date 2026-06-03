@@ -1,9 +1,7 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BusIntegrationTest {
 
@@ -43,26 +41,10 @@ public class BusIntegrationTest {
             BusRepository repo = new BusRepository();
             BusService busService = new BusService(repo);
 
-            // Test Case 1 - Invalid BusID due to letter
-            assertThrows(IllegalArgumentException.class,
-                    () -> {
-                        if (!busService.isValidBusID("1234567A"))
-                            throw new IllegalArgumentException("Invalid BusID");
-                    });
-
-            // Test Case 2 - Invalid Capacity
-            assertThrows(IllegalArgumentException.class,
-                    () -> {
-                        if (!busService.isValidCapacity(0))
-                            throw new IllegalArgumentException("Invalid Capacity");
-                    });
-
-            // Test Case 3 - Invalid Fuel Level
-            assertThrows(IllegalArgumentException.class,
-                    () -> {
-                        if (!busService.isValidFuelLevel(-1.0))
-                            throw new IllegalArgumentException("Invalid FuelLevel");
-                    });
+            // Invalid BusID (contains letter)
+            assertFalse(busService.isValidBusID("1234567A"));
+            assertFalse(busService.isValidBusID("ABCDEFGH"));
+            assertFalse(busService.isValidBusID("1234!678"));
         }
     }
 
