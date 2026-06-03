@@ -15,12 +15,12 @@ public class DriverService {
      * @param driverID unique driver id
      * @param name name of the driver
      * @param experienceYears years of driving experience
-     * @param licenseType the driver's license type
+     * @param licenceType the driver's licence type
      * @param address pipe-delimited address
      * @param birthdate date of birth in dd-MM-yyyy format
      * @throws IllegalArgumentException if any field fails validation
      */
-    public void createDriver(String driverID, String name, int experienceYears, LicenseType licenseType, String address, String birthdate) {
+    public void createDriver(String driverID, String name, int experienceYears, LicenceType licenceType, String address, String birthdate) {
         if (!isValidDriverID(driverID))
             throw new IllegalArgumentException("Invalid driver ID: " + driverID);
         if (!isValidAddress(address))
@@ -28,7 +28,7 @@ public class DriverService {
         if (!isValidBirthdate(birthdate))
             throw new IllegalArgumentException("Invalid birthdate format");
 
-        driverRepository.add(new Driver(driverID, name, experienceYears, licenseType, address, birthdate));
+        driverRepository.add(new Driver(driverID, name, experienceYears, licenceType, address, birthdate));
     }
 
     /**
@@ -102,16 +102,16 @@ public class DriverService {
     }
 
     /**
-     * Updates the license type of a driver.
-     * Drivers with more than 10 years of experience cannot change their license type.
+     * Updates the licence type of a driver.
+     * Drivers with more than 10 years of experience cannot change their licence type.
      * @param driver the driver to update
-     * @param licenseType the new license type
+     * @param licenceType the new licence type
      * @throws IllegalArgumentException if the driver has more than 10 years of experience
      */
-    public void updateLicenseType(Driver driver, LicenseType licenseType) {
+    public void updateLicenceType(Driver driver, LicenceType licenceType) {
         if (driver.getExperienceYears() > 10)
-            throw new IllegalArgumentException("Driver with more than 10 years of experience cannot change license type");
-        driver.setLicenseType(licenseType);
+            throw new IllegalArgumentException("Driver with more than 10 years of experience cannot change licence type");
+        driver.setLicenceType(licenceType);
     }
 
     /**

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DriverRepository {
     private static final String FILE_PATH = "driver_repository.txt";
-    private static final String HEADER = "driverID,name,experienceYears,licenseType,address,birthdate";
+    private static final String HEADER = "driverID,name,experienceYears,licenceType,address,birthdate";
     private List<Driver> drivers = new ArrayList<>();
 
     public DriverRepository(){
@@ -54,18 +54,18 @@ public class DriverRepository {
      * Updates the fields of an existing driver and persists the change.
      * @param driverID the ID of the driver to update
      * @param experienceYears updated years of experience (ignored if null)
-     * @param licenseType     updated license type (ignored if null)
+     * @param licenceType     updated licence type (ignored if null)
      * @param address         updated address (ignored if null)
      * @param birthdate       updated birthdate in dd-MM-yyyy format (ignored if null)
      * @throws IllegalArgumentException if no driver with the given ID exists
      */
-    public void update(String driverID, Integer experienceYears, LicenseType licenseType, String address, String birthdate) {
+    public void update(String driverID, Integer experienceYears, LicenceType licenceType, String address, String birthdate) {
         Driver d = retrieve(driverID);
         if (d == null){
             throw new IllegalArgumentException("Driver not found:" + driverID);
         }
         if (experienceYears != null) d.setExperienceYears(experienceYears);
-        if (licenseType != null) d.setLicenseType(licenseType);
+        if (licenceType != null) d.setLicenceType(licenceType);
         if (address != null) d.setAddress(address);
         if (birthdate != null) d.setBirthdate(birthdate);
     }
@@ -104,7 +104,7 @@ public class DriverRepository {
                     d.getDriverID(),
                     d.getName(),
                     String.valueOf(d.getExperienceYears()),
-                    d.getLicenseType().name(),
+                    d.getLicenceType().name(),
                     d.getAddress(),
                     d.getBirthdate()
                 ));
@@ -137,7 +137,7 @@ public class DriverRepository {
                     parts[0].trim(),
                     parts[1].trim(),
                     Integer.parseInt(parts[2].trim()),
-                    LicenseType.valueOf(parts[3].trim()),
+                    LicenceType.valueOf(parts[3].trim()),
                     parts[4].trim(),
                     parts[5].trim()
                 );

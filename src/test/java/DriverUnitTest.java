@@ -163,9 +163,9 @@ public class DriverUnitTest {
         }
     }
 
-    // D4 - License Update Restriction
+    // D4 - Licence Update Restriction
     @Nested
-    class UpdateLicense {
+    class UpdateLicence {
         // static variables
         String address = "124 | La Trobe St | Melbourne | Victoria | Australia";
         String birthDate = "01-01-2001";
@@ -173,35 +173,35 @@ public class DriverUnitTest {
         // Test Case 1 – Over 10 years experience
         @Test
         void GivenExperienceOver10_ShouldThrow() {
-            Driver driver1 = new Driver("34ab!!cdAB", "Aaron", 11, LicenseType.HEAVY, address, birthDate);
-            assertThrows(IllegalArgumentException.class, () -> driverService.updateLicenseType(driver1, LicenseType.MEDIUM));
+            Driver driver1 = new Driver("34ab!!cdAB", "Aaron", 11, LicenceType.HEAVY, address, birthDate);
+            assertThrows(IllegalArgumentException.class, () -> driverService.updateLicenceType(driver1, LicenceType.MEDIUM));
 
-            Driver driver2 = new Driver("34ab!!cdAC", "Alex", 20, LicenseType.LIGHT, address, birthDate);
-            assertThrows(IllegalArgumentException.class, () -> driverService.updateLicenseType(driver2, LicenseType.PUBLIC_TRANSPORT));
+            Driver driver2 = new Driver("34ab!!cdAC", "Alex", 20, LicenceType.LIGHT, address, birthDate);
+            assertThrows(IllegalArgumentException.class, () -> driverService.updateLicenceType(driver2, LicenceType.PUBLIC_TRANSPORT));
         }
 
         // Test Case 2 – Under 10 years experience
         @Test
         void GivenExperienceUnder10_ShouldUpdate() {
-            Driver driver1 = new Driver("34ab!!cdBB", "Bob", 9, LicenseType.MEDIUM, address, birthDate);
-            driverService.updateLicenseType(driver1, LicenseType.LIGHT);
-            assertEquals(LicenseType.LIGHT, driver1.getLicenseType());
+            Driver driver1 = new Driver("34ab!!cdBB", "Bob", 9, LicenceType.MEDIUM, address, birthDate);
+            driverService.updateLicenceType(driver1, LicenceType.LIGHT);
+            assertEquals(LicenceType.LIGHT, driver1.getLicenceType());
 
-            Driver driver2 = new Driver("34ab!!cdBC", "Barry", 5, LicenseType.PUBLIC_TRANSPORT, address, birthDate);
-            driverService.updateLicenseType(driver2, LicenseType.HEAVY);
-            assertEquals(LicenseType.HEAVY, driver2.getLicenseType());
+            Driver driver2 = new Driver("34ab!!cdBC", "Barry", 5, LicenceType.PUBLIC_TRANSPORT, address, birthDate);
+            driverService.updateLicenceType(driver2, LicenceType.HEAVY);
+            assertEquals(LicenceType.HEAVY, driver2.getLicenceType());
         }
 
         // Test Case 3 – Exactly 10 years experience
         @Test
         void GivenExperienceExactly10_ShouldUpdate() {
-            Driver driver1 = new Driver("34ab!!cdCB", "Cindy", 10, LicenseType.HEAVY, address, birthDate);
-            driverService.updateLicenseType(driver1, LicenseType.LIGHT);
-            assertEquals(LicenseType.LIGHT, driver1.getLicenseType());
+            Driver driver1 = new Driver("34ab!!cdCB", "Cindy", 10, LicenceType.HEAVY, address, birthDate);
+            driverService.updateLicenceType(driver1, LicenceType.LIGHT);
+            assertEquals(LicenceType.LIGHT, driver1.getLicenceType());
 
-            Driver driver2 = new Driver("34ab!!cdCD", "Caine", 10, LicenseType.MEDIUM, address, birthDate);
-            driverService.updateLicenseType(driver2, LicenseType.HEAVY);
-            assertEquals(LicenseType.HEAVY, driver2.getLicenseType());
+            Driver driver2 = new Driver("34ab!!cdCD", "Caine", 10, LicenceType.MEDIUM, address, birthDate);
+            driverService.updateLicenceType(driver2, LicenceType.HEAVY);
+            assertEquals(LicenceType.HEAVY, driver2.getLicenceType());
         }
     }
 
@@ -216,11 +216,11 @@ public class DriverUnitTest {
         @Test
         void GivenDriverID_ShouldReturnSameValue() {
             String driver1ID = "34ab!!cdAB";
-            Driver driver1 = new Driver(driver1ID, "Aaron", 5, LicenseType.LIGHT, address, birthDate);
+            Driver driver1 = new Driver(driver1ID, "Aaron", 5, LicenceType.LIGHT, address, birthDate);
             assertEquals(driver1ID, driver1.getDriverID());
 
             String driver2ID = "34ab!!cdAC";
-            Driver driver2 = new Driver(driver2ID, "Alex", 5, LicenseType.LIGHT, address, birthDate);
+            Driver driver2 = new Driver(driver2ID, "Alex", 5, LicenceType.LIGHT, address, birthDate);
             assertEquals(driver2ID, driver2.getDriverID());
         }
 
@@ -228,11 +228,11 @@ public class DriverUnitTest {
         @Test
         void GivenName_ShouldReturnSameValue() {
             String driver1Name = "Aaron";
-            Driver driver1 = new Driver("34ab!!cdAB", driver1Name, 5, LicenseType.LIGHT, address, birthDate);
+            Driver driver1 = new Driver("34ab!!cdAB", driver1Name, 5, LicenceType.LIGHT, address, birthDate);
             assertEquals(driver1Name, driver1.getName());
 
             String driver2Name = "Alice";
-            Driver driver2 = new Driver("34ab!!cdAC", driver2Name, 5, LicenseType.LIGHT, address, birthDate);
+            Driver driver2 = new Driver("34ab!!cdAC", driver2Name, 5, LicenceType.LIGHT, address, birthDate);
             assertEquals(driver2Name, driver2.getName());
         }
 

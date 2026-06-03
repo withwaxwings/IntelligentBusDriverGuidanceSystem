@@ -6,7 +6,7 @@ public class Driver{
     private String driverID;
     private String name;
     private int experienceYears;
-    private LicenseType licenseType;
+    private LicenceType licenceType;
     private String address;
     private String birthdate;
 
@@ -15,15 +15,15 @@ public class Driver{
      * @param driverID unique 10-character driver id
      * @param name name of the driver
      * @param experienceYears years of driving experience
-     * @param licenseType the driver's license type
+     * @param licenceType the driver's licence type
      * @param address pipe-delimited address
      * @param birthdate date of birth in dd-MM-yyyy format
      */
-    public Driver(String driverID, String name, int experienceYears, LicenseType licenseType, String address, String birthdate){
+    public Driver(String driverID, String name, int experienceYears, LicenceType licenceType, String address, String birthdate){
         this.driverID = driverID;
         this.name = name;
         this.experienceYears = experienceYears;
-        this.licenseType = licenseType;
+        this.licenceType = licenceType;
         this.address = address;
         this.birthdate = birthdate;
     }
@@ -44,12 +44,12 @@ public class Driver{
         this.experienceYears = experienceYears;
     }
 
-    public LicenseType getLicenseType() {
-        return licenseType;
+    public LicenceType getLicenceType() {
+        return licenceType;
     }
 
-    public void setLicenseType(LicenseType licenseType) {
-        this.licenseType = licenseType;
+    public void setLicenceType(LicenceType licenceType) {
+        this.licenceType = licenceType;
     }
 
     public String getAddress() {
@@ -80,7 +80,7 @@ public class Driver{
 
     @Override
     public String toString() {
-        return String.format("Driver[ID=%s, Name=%s, Experience=%d years, License=%s, Address=%s, Birthdate=%s]",
-            driverID, name, experienceYears, licenseType, address, birthdate);
+        return String.format("Driver[ID=%s, Name=%s, Experience=%d years, Licence=%s, Address=%s, Birthdate=%s]",
+            driverID, name, experienceYears, licenceType, address, birthdate);
     }
 }

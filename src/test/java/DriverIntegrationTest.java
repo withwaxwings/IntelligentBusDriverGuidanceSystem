@@ -30,9 +30,9 @@ public class DriverIntegrationTest {
             String driver2ID = "34ab!!cdAC";
             String driver3ID = "34ab!!cdAD";
 
-            driverService.createDriver(driver1ID, "Aaron", 5, LicenseType.HEAVY, address, birthDate);
-            driverService.createDriver(driver2ID, "Alex", 3, LicenseType.LIGHT, address, birthDate);
-            driverService.createDriver(driver3ID, "Alice", 7, LicenseType.MEDIUM, address, birthDate);
+            driverService.createDriver(driver1ID, "Aaron", 5, LicenceType.HEAVY, address, birthDate);
+            driverService.createDriver(driver2ID, "Alex", 3, LicenceType.LIGHT, address, birthDate);
+            driverService.createDriver(driver3ID, "Alice", 7, LicenceType.MEDIUM, address, birthDate);
 
             assertNotNull(driverRepository.retrieve(driver1ID));
             assertEquals("Aaron", driverRepository.retrieve(driver1ID).getName());
@@ -49,15 +49,15 @@ public class DriverIntegrationTest {
         void GivenDuplicateDriverID_ShouldThrow() {
             String duplicateID = "34ab!!cdAB";
 
-            driverService.createDriver(duplicateID, "Aaron", 5, LicenseType.HEAVY, address, birthDate);
-            assertThrows(IllegalArgumentException.class, () -> driverService.createDriver(duplicateID, "Alex", 3, LicenseType.LIGHT, address, birthDate));
+            driverService.createDriver(duplicateID, "Aaron", 5, LicenceType.HEAVY, address, birthDate);
+            assertThrows(IllegalArgumentException.class, () -> driverService.createDriver(duplicateID, "Alex", 3, LicenceType.LIGHT, address, birthDate));
         }
 
         // Test Case 3 – Driver updates are persistent
         @Test
         void GivenDriverUpdated_ShouldReturnUpdatedDetails() {
             String driverID = "34ab!!cdAB";
-            driverService.createDriver(driverID, "Alex", 5, LicenseType.HEAVY, address, birthDate);
+            driverService.createDriver(driverID, "Alex", 5, LicenceType.HEAVY, address, birthDate);
             Driver driver = driverRepository.retrieve(driverID);
 
             String newAddress = "1341|Dandenong Rd|Malvern East|Victoria|Australia";
@@ -66,7 +66,7 @@ public class DriverIntegrationTest {
 
             driverService.updateBirthdate(driver, newBirthdate);
             driverService.updateAddress(driver, newAddress);
-            driverService.updateLicenseType(driver, LicenseType.PUBLIC_TRANSPORT);
+            driverService.updateLicenceType(driver, LicenceType.PUBLIC_TRANSPORT);
             driverService.updateExperienceYears(driver, newExperience);
             driverService.save();
 
@@ -75,7 +75,7 @@ public class DriverIntegrationTest {
 
             assertEquals(newBirthdate, updated.getBirthdate());
             assertEquals(newAddress, updated.getAddress());
-            assertEquals(LicenseType.PUBLIC_TRANSPORT, updated.getLicenseType());
+            assertEquals(LicenceType.PUBLIC_TRANSPORT, updated.getLicenceType());
             assertEquals(newExperience, updated.getExperienceYears());
         }
 
@@ -84,7 +84,7 @@ public class DriverIntegrationTest {
         void GivenDriverAdded_ShouldIncreaseCount() {
             int before = driverRepository.count();
 
-            driverService.createDriver("34ab!!cdAB", "Aaron", 4, LicenseType.HEAVY, address, birthDate);
+            driverService.createDriver("34ab!!cdAB", "Aaron", 4, LicenceType.HEAVY, address, birthDate);
 
             int after = driverRepository.count();
 
