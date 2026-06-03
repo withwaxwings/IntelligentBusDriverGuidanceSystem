@@ -1,8 +1,10 @@
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DriverUnitTest {
 
@@ -155,8 +157,44 @@ public class DriverUnitTest {
 
     // D4 - License Update Restriction
     @Nested
-    class UpdateLicense{
+    class UpdateLicense {
+        // static variables
+        String address = "124 | La Trobe St | Melbourne | Victoria | Australia";
+        String birthDate = "01-01-2001";
 
+        // Test Case 1 – Over 10 years experience
+        @Test
+        void GivenExperienceOver10_ShouldThrow() {
+            Driver driver1 = new Driver("34ab!!cdAB", "Aaron", 11, LicenseType.HEAVY, address, birthDate);
+            assertThrows(IllegalArgumentException.class, () -> driverService.updateLicenseType(driver1, LicenseType.MEDIUM));
+
+            Driver driver2 = new Driver("34ab!!cdAC", "Alex", 20, LicenseType.LIGHT, address, birthDate);
+            assertThrows(IllegalArgumentException.class, () -> driverService.updateLicenseType(driver2, LicenseType.PUBLIC_TRANSPORT));
+        }
+
+        // Test Case 2 – Under 10 years experience
+        @Test
+        void GivenExperienceUnder10_ShouldUpdate() {
+            Driver driver1 = new Driver("34ab!!cdBB", "Bob", 9, LicenseType.MEDIUM, address, birthDate);
+            driverService.updateLicenseType(driver1, LicenseType.LIGHT);
+            assertEquals(LicenseType.LIGHT, driver1.getLicenseType());
+
+            Driver driver2 = new Driver("34ab!!cdBC", "Barry", 5, LicenseType.PUBLIC_TRANSPORT, address, birthDate);
+            driverService.updateLicenseType(driver2, LicenseType.HEAVY);
+            assertEquals(LicenseType.HEAVY, driver2.getLicenseType());
+        }
+
+        // Test Case 3 – Exactly 10 years experience
+        @Test
+        void GivenExperienceExactly10_ShouldUpdate() {
+            Driver driver1 = new Driver("34ab!!cdCB", "Cindy", 10, LicenseType.HEAVY, address, birthDate);
+            driverService.updateLicenseType(driver1, LicenseType.LIGHT);
+            assertEquals(LicenseType.LIGHT, driver1.getLicenseType());
+
+            Driver driver2 = new Driver("34ab!!cdCD", "Caine", 10, LicenseType.MEDIUM, address, birthDate);
+            driverService.updateLicenseType(driver2, LicenseType.HEAVY);
+            assertEquals(LicenseType.HEAVY, driver2.getLicenseType());
+        }
     }
 
     // D5 - Immutable Fields
