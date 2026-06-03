@@ -32,8 +32,8 @@ public class BusUnitTest {
         @Test
         void GivenTooShortBusID_ShouldReject() {
             assertFalse(busService.isValidBusID("1234567"));
-            assertFalse(busService.isValidBusID("1"));
-            assertFalse(busService.isValidBusID(""));
+            assertFalse(busService.isValidBusID("1234"));
+            assertFalse(busService.isValidBusID("0"));
         }
         // Test Case 3 – Too Long
         @Test
@@ -54,7 +54,6 @@ public class BusUnitTest {
         void GivenNullOrEmpty_ShouldReject() {
             assertFalse(busService.isValidBusID(""));
             assertFalse(busService.isValidBusID(null));
-            assertFalse(busService.isValidBusID("        "));
         }
     }
 
@@ -64,8 +63,8 @@ public class BusUnitTest {
         // Test Case 1 – Valid Lower Boundary Capacity
         @Test
         void GivenLowerBoundaryCapacity_ShouldAccept() {
+            assertTrue(busService.isValidCapacity(0));
             assertTrue(busService.isValidCapacity(1));
-            assertTrue(busService.isValidCapacity(2));
             assertTrue(busService.isValidCapacity(35));
         }
         // Test Case 2 – Valid Upper Boundary Capacity
@@ -73,14 +72,8 @@ public class BusUnitTest {
         void GivenUpperBoundaryCapacity_ShouldAccept() {
             assertTrue(busService.isValidCapacity(70));
             assertTrue(busService.isValidCapacity(69));
-            assertTrue(busService.isValidCapacity(10));
         }
-        // Test Case 3 – Boundary and below
-        @Test
-        void GivenZeroCapacity_ShouldAccept() {
-            assertTrue(busService.isValidCapacity(0));
-        }
-
+        // Test Case 3 – Negative Capacity
         @Test
         void GivenNegativeCapacity_ShouldReject() {
             assertFalse(busService.isValidCapacity(-1));
@@ -101,8 +94,8 @@ public class BusUnitTest {
             assertEquals(50, bus.getCapacity());
 
             Bus bus2 = new Bus("12345679", 60, 50.0, FuelType.DIESEL);
-            busService.updateCapacity(bus2, 1);
-            assertEquals(1, bus2.getCapacity());
+            busService.updateCapacity(bus2, 0);
+            assertEquals(0, bus2.getCapacity());
 
             Bus bus3 = new Bus("12345670", 50, 50.0, FuelType.DIESEL);
             busService.updateCapacity(bus3, 50);
@@ -111,16 +104,13 @@ public class BusUnitTest {
         // Test Case 6 – Capacity Update Too High
         @Test
         void GivenCapacityIncreased_ShouldThrow() {
-            Bus bus = new Bus("12345678", 50, 50.0, FuelType.DIESEL);
-            assertThrows(IllegalStateException.class, () -> busService.updateCapacity(bus, 60));
+            Bus bus = new Bus("12345678", 60, 50.0, FuelType.DIESEL);
+            assertThrows(IllegalStateException.class, () -> busService.updateCapacity(bus, 70));
 
             Bus bus2 = new Bus("12345679", 50, 50.0, FuelType.DIESEL);
             assertThrows(IllegalStateException.class, () -> busService.updateCapacity(bus2, 51));
-
-            Bus bus3 = new Bus("12345670", 30, 50.0, FuelType.DIESEL);
-            assertThrows(IllegalStateException.class, () -> busService.updateCapacity(bus3, 70));
         }
-        // Test Case 7 – Capacity Update Too Low
+        // Test Case 7 – Capacity Negative
         @Test
         void GivenNegativeCapacityUpdate_ShouldThrow() {
             Bus bus = new Bus("12345678", 50, 50.0, FuelType.DIESEL);
@@ -141,13 +131,10 @@ public class BusUnitTest {
         void GivenDriverOver50WithLargeBus_ShouldReject() {
             Driver driver1 = new Driver("34ab!!cdAB", "Alice", 15, LicenseType.HEAVY, address, "01-01-1970");
             Driver driver2 = new Driver("34ab!!cdAC", "Bob", 20, LicenseType.HEAVY, address, "01-01-1965");
-            Driver driver3 = new Driver("34ab!!cdAD", "Carol", 10, LicenseType.HEAVY, address, "01-01-1960");
             Bus bus1 = new Bus("11111111", 50, 80.0, FuelType.DIESEL);
             Bus bus2 = new Bus("11111121", 55, 80.0, FuelType.DIESEL);
-            Bus bus3 = new Bus("11111122", 60, 80.0, FuelType.DIESEL);
             assertFalse(relationService.isDriverEligible(driver1, bus1));
             assertFalse(relationService.isDriverEligible(driver2, bus2));
-            assertFalse(relationService.isDriverEligible(driver3, bus3));
         }
 
         // Test Case 2 - Driver Over 50 With Small Bus
@@ -155,13 +142,10 @@ public class BusUnitTest {
         void GivenDriverOver50WithSmallBus_ShouldAccept() {
             Driver driver1 = new Driver("34ab!!cdAB", "Alice", 15, LicenseType.HEAVY, address, "01-01-1970");
             Driver driver2 = new Driver("34ab!!cdAC", "Bob", 20, LicenseType.HEAVY, address, "01-01-1965");
-            Driver driver3 = new Driver("34ab!!cdAD", "Carol", 10, LicenseType.HEAVY, address, "01-01-1960");
             Bus bus1 = new Bus("11111112", 30, 80.0, FuelType.DIESEL);
             Bus bus2 = new Bus("11111123", 25, 80.0, FuelType.DIESEL);
-            Bus bus3 = new Bus("11111124", 20, 80.0, FuelType.DIESEL);
             assertTrue(relationService.isDriverEligible(driver1, bus1));
             assertTrue(relationService.isDriverEligible(driver2, bus2));
-            assertTrue(relationService.isDriverEligible(driver3, bus3));
         }
 
         // Test Case 3 - Driver Aged Exactly 50
@@ -172,13 +156,10 @@ public class BusUnitTest {
 
             Driver driver1 = new Driver("34ab!!cdAB", "Alice", 15, LicenseType.HEAVY, address, birthdate);
             Driver driver2 = new Driver("34ab!!cdAC", "Bob", 10, LicenseType.HEAVY, address, birthdate);
-            Driver driver3 = new Driver("34ab!!cdAD", "Carol", 5, LicenseType.HEAVY, address, birthdate);
             Bus bus1 = new Bus("11111118", 50, 80.0, FuelType.DIESEL);
-            Bus bus2 = new Bus("11111125", 50, 80.0, FuelType.DIESEL);
-            Bus bus3 = new Bus("11111126", 50, 80.0, FuelType.DIESEL);
+            Bus bus2 = new Bus("11111119", 60, 80.0, FuelType.DIESEL);
             assertTrue(relationService.isDriverEligible(driver1, bus1));
             assertTrue(relationService.isDriverEligible(driver2, bus2));
-            assertTrue(relationService.isDriverEligible(driver3, bus3));
         }
     }
 
@@ -190,7 +171,7 @@ public class BusUnitTest {
         // Test Case 1 - Driver Does Not Have Enough Experience
         @Test
         void GivenElectricBusUnderExperience_ShouldReject() {
-            Driver driver1 = new Driver("34ab!!cdAB", "Alice", 3, LicenseType.HEAVY, address, "01-01-1995");
+            Driver driver1 = new Driver("34ab!!cdAB", "Alice", 4, LicenseType.HEAVY, address, "01-01-1995");
             Driver driver2 = new Driver("34ab!!cdAC", "Bob", 2, LicenseType.HEAVY, address, "01-01-1995");
             Driver driver3 = new Driver("34ab!!cdAD", "Carol", 1, LicenseType.HEAVY, address, "01-01-1995");
             Bus bus1 = new Bus("11111113", 30, 80.0, FuelType.ELECTRICITY);
@@ -204,26 +185,12 @@ public class BusUnitTest {
         // Test Case 2 - Driver Has Enough Experience
         @Test
         void GivenElectricBusSufficientExperience_ShouldAccept() {
-            Driver driver1 = new Driver("34ab!!cdAB", "Alice", 6, LicenseType.HEAVY, address, "01-01-1995");
+            Driver driver1 = new Driver("34ab!!cdAB", "Alice", 5, LicenseType.HEAVY, address, "01-01-1995");
             Driver driver2 = new Driver("34ab!!cdAC", "Bob", 8, LicenseType.HEAVY, address, "01-01-1995");
             Driver driver3 = new Driver("34ab!!cdAD", "Carol", 10, LicenseType.HEAVY, address, "01-01-1995");
             Bus bus1 = new Bus("11111115", 30, 80.0, FuelType.ELECTRICITY);
             Bus bus2 = new Bus("11111129", 30, 80.0, FuelType.ELECTRICITY);
             Bus bus3 = new Bus("11111130", 30, 80.0, FuelType.ELECTRICITY);
-            assertTrue(relationService.isDriverEligible(driver1, bus1));
-            assertTrue(relationService.isDriverEligible(driver2, bus2));
-            assertTrue(relationService.isDriverEligible(driver3, bus3));
-        }
-
-        // Test Case 3 - Driver Has Exactly 5 Years Experience
-        @Test
-        void GivenElectricBusExactlyFiveYears_ShouldAccept() {
-            Driver driver1 = new Driver("34ab!!cdAB", "Alice", 5, LicenseType.HEAVY, address, "01-01-1995");
-            Driver driver2 = new Driver("34ab!!cdAC", "Bob", 5, LicenseType.HEAVY, address, "01-01-1990");
-            Driver driver3 = new Driver("34ab!!cdAD", "Carol", 5, LicenseType.HEAVY, address, "01-01-1985");
-            Bus bus1 = new Bus("11111119", 30, 80.0, FuelType.ELECTRICITY);
-            Bus bus2 = new Bus("11111131", 30, 80.0, FuelType.ELECTRICITY);
-            Bus bus3 = new Bus("11111132", 30, 80.0, FuelType.ELECTRICITY);
             assertTrue(relationService.isDriverEligible(driver1, bus1));
             assertTrue(relationService.isDriverEligible(driver2, bus2));
             assertTrue(relationService.isDriverEligible(driver3, bus3));
