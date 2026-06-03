@@ -4,6 +4,13 @@ public class Bus {
     private double fuelLevel;
     private FuelType fuelType;
 
+    /**
+     * Constructs a new Bus.
+     * @param busID unique 8-digit numeric bus id
+     * @param capacity passenger capacity (0–70)
+     * @param fuelLevel current fuel level as a percentage (0.0–100.0)
+     * @param fuelType the bus's fuel type
+     */
     public Bus(String busID, int capacity, double fuelLevel, FuelType fuelType){
         this.busID = busID;
         this.capacity = capacity;
@@ -41,8 +48,7 @@ public class Bus {
 
     @Override
     public String toString(){
-        return String.format("BusID: %s, Capacity: %d, FuelLevel: %.2f%%, FuelType: %s",
+        return String.format("Bus[ID=%s, Capacity=%d, FuelLevel=%.2f%%, FuelType=%s]",
                 busID, capacity, fuelLevel, fuelType);
     }
-
 }
