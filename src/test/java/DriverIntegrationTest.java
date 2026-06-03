@@ -31,13 +31,9 @@ public class DriverIntegrationTest {
             String driver2ID = "34ab!!cdAC";
             String driver3ID = "34ab!!cdAD";
 
-            Driver driver1 = new Driver(driver1ID, "Aaron", 5, LicenseType.HEAVY, address, birthDate);
-            Driver driver2 = new Driver(driver2ID, "Alex", 3, LicenseType.LIGHT, address, birthDate);
-            Driver driver3 = new Driver(driver3ID, "Alice", 7, LicenseType.MEDIUM, address, birthDate);
-
-            driverRepository.add(driver1);
-            driverRepository.add(driver2);
-            driverRepository.add(driver3);
+            driverService.createDriver(driver1ID, "Aaron", 5, LicenseType.HEAVY, address, birthDate);
+            driverService.createDriver(driver2ID, "Alex", 3, LicenseType.LIGHT, address, birthDate);
+            driverService.createDriver(driver3ID, "Alice", 7, LicenseType.MEDIUM, address, birthDate);
 
             assertNotNull(driverRepository.retrieve(driver1ID));
             assertEquals(driver1ID, driverRepository.retrieve(driver1ID).getDriverID());
@@ -53,31 +49,33 @@ public class DriverIntegrationTest {
         @Test
         void GivenDuplicateDriverID_ShouldThrow() {
             String duplicateID = "34ab!!cdAB";
-            Driver driver1 = new Driver(duplicateID, "Aaron", 5, LicenseType.HEAVY, address, birthDate);
-            Driver driver2 = new Driver(duplicateID, "Alex", 3, LicenseType.LIGHT, address, birthDate);
 
-            driverRepository.add(driver1);
-            assertThrows(IllegalArgumentException.class, () -> driverRepository.add(driver2));
+            driverService.createDriver(duplicateID, "Aaron", 5, LicenseType.HEAVY, address, birthDate);
+            assertThrows(IllegalArgumentException.class,
+                    () -> driverService.createDriver(duplicateID, "Alex", 3, LicenseType.LIGHT, address, birthDate));
         }
 
         // Test Case 3 – Driver updates are persistent
         @Test
         void GivenDriverUpdated_ShouldReturnUpdatedDetails() {
             String driverID = "34ab!!cdAB";
-            Driver driver = new Driver(driverID, "Alex", 5, LicenseType.HEAVY, address, birthDate);
-            driverRepository.add(driver);
+            driverService.createDriver(driverID, "Alex", 5, LicenseType.HEAVY, address, birthDate);
+            Driver driver = driverRepository.retrieve(driverID);
 
             String newAddress = "1341|Dandenong Rd|Malvern East|Victoria|Australia";
             String newBirthdate = "02-02-2002";
+            int newExperience = 9;
 
             driverService.updateBirthdate(driver, newBirthdate);
             driverService.updateAddress(driver, newAddress);
             driverService.updateLicenseType(driver, LicenseType.PUBLIC_TRANSPORT);
+            driverService.updateExperienceYears(driver, newExperience);
 
             Driver updated = driverRepository.retrieve(driverID);
             assertEquals(newBirthdate, updated.getBirthdate());
             assertEquals(newAddress, updated.getAddress());
             assertEquals(LicenseType.PUBLIC_TRANSPORT, updated.getLicenseType());
+            assertEquals(newExperience, updated.getExperienceYears());
         }
 
         // Test Case 4 – Repository count updates correctly after add
