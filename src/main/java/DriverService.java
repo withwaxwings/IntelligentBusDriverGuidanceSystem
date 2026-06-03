@@ -2,16 +2,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-/**
- * Service class for validating and managing Driver business logic.
- */
 public class DriverService {
 
     private final DriverRepository driverRepository;
 
-    /**
-     * @param driverRepository the repository used to persist driver data
-     */
     public DriverService(DriverRepository driverRepository) {
         this.driverRepository = driverRepository;
     }

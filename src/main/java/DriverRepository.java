@@ -12,9 +12,6 @@ public class DriverRepository {
     private static final String HEADER = "driverID,name,experienceYears,licenseType,address,birthdate";
     private List<Driver> drivers = new ArrayList<>();
 
-    /**
-     * Constructs a new DriverRepository and loads existing records from file.
-     */
     public DriverRepository(){
         loadFromFile();
     }
