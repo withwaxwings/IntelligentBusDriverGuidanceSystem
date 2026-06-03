@@ -110,4 +110,47 @@ public class DriverUnitTest {
         }
     }
 
+    // D3 - isValidBirthdate
+    @Nested
+    class ValidBirthDate {
+        // Test Case 1 – Valid Birthdate
+        @Test
+        void GivenValidBirthdate_ShouldAccept() {
+            assertTrue(driverService.isValidBirthdate("11-09-2005"));
+            assertTrue(driverService.isValidBirthdate("31-12-1999"));
+            assertTrue(driverService.isValidBirthdate("29-02-2000"));
+        }
+
+        // Test Case 2 – Incorrect Format
+        @Test
+        void GivenIncorrectFormat_ShouldReject() {
+            assertFalse(driverService.isValidBirthdate("11/09/2005"));
+            assertFalse(driverService.isValidBirthdate("02,02,2002"));
+            assertFalse(driverService.isValidBirthdate("2003-02-01"));
+        }
+
+        // Test Case 3 – Invalid Day
+        @Test
+        void GivenInvalidDay_ShouldReject() {
+            assertFalse(driverService.isValidBirthdate("32-01-2000"));
+            assertFalse(driverService.isValidBirthdate("00-05-2005"));
+            assertFalse(driverService.isValidBirthdate("First-03-2003"));
+        }
+
+        // Test Case 4 – Invalid Month
+        @Test
+        void GivenInvalidMonth_ShouldReject() {
+            assertFalse(driverService.isValidBirthdate("01-13-2000"));
+            assertFalse(driverService.isValidBirthdate("02-00-2002"));
+            assertFalse(driverService.isValidBirthdate("03-Mar-2004"));
+        }
+
+        // Test Case 5 – Empty and Null Input
+        @Test
+        void GivenEmptyOrNull_ShouldReject() {
+            assertFalse(driverService.isValidBirthdate(""));
+            assertFalse(driverService.isValidBirthdate(null));
+        }
+    }
+
 }
