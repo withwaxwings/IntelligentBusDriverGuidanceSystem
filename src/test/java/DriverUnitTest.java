@@ -208,6 +208,7 @@ public class DriverUnitTest {
     // D5 - Immutable Fields
     @Nested
     class ImmutableFields {
+        // static variables
         String address = "124 | La Trobe St | Melbourne | Victoria | Australia";
         String birthDate = "01-01-2001";
 
@@ -235,6 +236,7 @@ public class DriverUnitTest {
             assertEquals(driver2Name, driver2.getName());
         }
 
+        // Test Case 3 - Verify not setDriverID and setName mutators exists
         @Test
         void ShouldNotHave_DriverID_and_Name_Mutators(){
             boolean hasMutableSetter = false;
