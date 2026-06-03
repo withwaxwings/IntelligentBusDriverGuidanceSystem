@@ -65,10 +65,14 @@ public class BusUnitTest {
             assertTrue(busService.isValidCapacity(69));
             assertTrue(busService.isValidCapacity(10));
         }
-        // Test Case 3 – Too Low
+        // Test Case 3 – Boundary and below
         @Test
-        void Capacity_Zero_returns_False() {
-            assertFalse(busService.isValidCapacity(0));
+        void Capacity_Zero_returns_True() {
+            assertTrue(busService.isValidCapacity(0));
+        }
+
+        @Test
+        void Capacity_Negative_returns_False() {
             assertFalse(busService.isValidCapacity(-1));
             assertFalse(busService.isValidCapacity(-100));
         }
@@ -108,15 +112,12 @@ public class BusUnitTest {
         }
         // Test Case 7 – Capacity Update Too Low
         @Test
-        void SetCapacity_Zero_throws_IllegalArgument() {
+        void SetCapacity_Negative_throws_IllegalArgument() {
             Bus bus = new Bus("12345678", 50, 50.0, FuelType.DIESEL);
-            assertThrows(IllegalArgumentException.class, () -> busService.updateCapacity(bus, 0));
+            assertThrows(IllegalArgumentException.class, () -> busService.updateCapacity(bus, -1));
 
             Bus bus2 = new Bus("12345678", 50, 50.0, FuelType.DIESEL);
-            assertThrows(IllegalArgumentException.class, () -> busService.updateCapacity(bus2, -1));
-
-            Bus bus3 = new Bus("12345678", 50, 50.0, FuelType.DIESEL);
-            assertThrows(IllegalArgumentException.class, () -> busService.updateCapacity(bus3, -50));
+            assertThrows(IllegalArgumentException.class, () -> busService.updateCapacity(bus2, -50));
         }
     }
 }

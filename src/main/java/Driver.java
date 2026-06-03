@@ -10,6 +10,15 @@ public class Driver{
     private String address;
     private String birthdate;
 
+    /**
+     * Constructs a new Driver.
+     * @param driverID unique 10-character driver id
+     * @param name name of the driver
+     * @param experienceYears years of driving experience
+     * @param licenseType the driver's license type
+     * @param address pipe-delimited address
+     * @param birthdate date of birth in dd-MM-yyyy format
+     */
     public Driver(String driverID, String name, int experienceYears, LicenseType licenseType, String address, String birthdate){
         this.driverID = driverID;
         this.name = name;
@@ -17,7 +26,6 @@ public class Driver{
         this.licenseType = licenseType;
         this.address = address;
         this.birthdate = birthdate;
-
     }
 
     public String getDriverID() {
@@ -60,6 +68,10 @@ public class Driver{
         this.birthdate = birthdate;
     }
 
+    /**
+     * Calculates the driver's current age based on their birthdate.
+     * @return age in years
+     */
     public int getAgeInYears() {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate dateOfBirth = LocalDate.parse(this.birthdate, format);

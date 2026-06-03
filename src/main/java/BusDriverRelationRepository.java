@@ -11,11 +11,20 @@ public class BusDriverRelationRepository {
         loadFromFile();
     }
 
+    /**
+     * Adds a bus-driver relation to the repository.
+     * @param relation the relation to add
+     */
     public void add(BusDriverRelation relation) {
         relations.add(relation);
         saveToFile();
     }
 
+    /**
+     * Retrieves all relations for a given bus.
+     * @param busID the bus ID to search by
+     * @return list of relations involving the given bus
+     */
     public List<BusDriverRelation> retrieveByBus(String busID) {
         List<BusDriverRelation> result = new ArrayList<>();
         for (BusDriverRelation r : relations) {
@@ -24,6 +33,11 @@ public class BusDriverRelationRepository {
         return result;
     }
 
+    /**
+     * Retrieves all relations for a given driver.
+     * @param driverID the driver ID to search by
+     * @return list of relations involving the given driver
+     */
     public List<BusDriverRelation> retrieveByDriver(String driverID) {
         List<BusDriverRelation> result = new ArrayList<>();
         for (BusDriverRelation r : relations) {
@@ -32,10 +46,19 @@ public class BusDriverRelationRepository {
         return result;
     }
 
+    /**
+     * @return a copy of all bus-driver relations in the repository
+     */
     public List<BusDriverRelation> retrieveAll() {
         return new ArrayList<>(relations);
     }
 
+    /**
+     * Removes a specific bus-driver relation from the repository.
+     * @param busID the bus ID of the relation to remove
+     * @param driverID the driver ID of the relation to remove
+     * @throws IllegalArgumentException if no matching relation is found
+     */
     public void remove(String busID, String driverID) {
         boolean removed = relations.removeIf(r -> r.getBusID().equals(busID) && r.getDriverID().equals(driverID));
         if (!removed)
@@ -43,15 +66,24 @@ public class BusDriverRelationRepository {
         saveToFile();
     }
 
+    /**
+     * @return the number of relations currently in the repository
+     */
     public int count() {
         return relations.size();
     }
 
+    /**
+     * Removes all relations from the repository and clears the file.
+     */
     public void clear() {
         relations.clear();
         saveToFile();
     }
 
+    /**
+     * Saves all bus-driver relations from the repository into the file
+     */
     private void saveToFile() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
             bw.write(HEADER);
@@ -65,12 +97,15 @@ public class BusDriverRelationRepository {
         }
     }
 
+    /**
+     * Loads all bus-driver relations from the file into the repository
+     */
     private void loadFromFile() {
         File file = new File(FILE_PATH);
         if (!file.exists()) return;
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            br.readLine(); // skip header
+            br.readLine();
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;

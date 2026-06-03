@@ -16,6 +16,11 @@ public class DriverRepository {
         loadFromFile();
     }
 
+    /**
+     * Adds a driver to the repository.
+     * @param newDriver the driver to add
+     * @throws IllegalArgumentException if a driver with the same ID already exists
+     */
     public void add(Driver newDriver){
         for (Driver d: drivers){
             if (d.getDriverID().equals(newDriver.getDriverID()))
@@ -25,6 +30,11 @@ public class DriverRepository {
         saveToFile();
     }
 
+    /**
+     * Retrieves a driver by their ID.
+     * @param driverID the ID to search for
+     * @return the matching Driver, or null if not found
+     */
     public Driver retrieve(String driverID) {
         for (Driver d: drivers){
             if (d.getDriverID().equals(driverID))
@@ -33,30 +43,50 @@ public class DriverRepository {
         return null;
     }
 
+    /**
+     * @return a copy of all drivers in the repository
+     */
     public List<Driver> retrieveAll() {
         return new ArrayList<>(drivers);
     }
 
-    public void update(String driverID, int experienceYears, LicenseType licenseType, String address) {
+    /**
+     * Updates the fields of an existing driver and persists the change.
+     * @param driverID the ID of the driver to update
+     * @param experienceYears updated years of experience (ignored if null)
+     * @param licenseType updated license type (ignored if null)
+     * @param address updated address (ignored if null)
+     * @throws IllegalArgumentException if no driver with the given ID exists
+     */
+    public void update(String driverID, Integer experienceYears, LicenseType licenseType, String address) {
         Driver d = retrieve(driverID);
         if (d == null){
             throw new IllegalArgumentException("Driver not found:" + driverID);
         }
-        d.setExperienceYears(experienceYears);
+        if (experienceYears != null) d.setExperienceYears(experienceYears);
         if (licenseType != null) d.setLicenseType(licenseType);
-        if (address != null)     d.setAddress(address);
+        if (address != null) d.setAddress(address);
         saveToFile();
     }
 
+    /**
+     * @return the number of drivers currently in the repository
+     */
     public int count() {
         return drivers.size();
     }
 
+    /**
+     * Removes all drivers from the repository and clears the file.
+     */
     public void clear() {
         drivers.clear();
         saveToFile();
     }
 
+    /**
+     * Saves all drivers from the repository into the file
+     */
     private void saveToFile() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
             bw.write(HEADER);
@@ -77,19 +107,21 @@ public class DriverRepository {
         }
     }
 
+    /**
+     * Loads all drivers from the file into the repository
+     */
     private void loadFromFile() {
         File file = new File(FILE_PATH);
         if (!file.exists()) return;
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            br.readLine(); // skips header line
+            br.readLine();
 
             String line;
             drivers = new ArrayList<>();
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
 
-                // Split on comma, but only 6 parts
                 String[] parts = line.split(",", 6);
                 if (parts.length < 6) continue;
 
