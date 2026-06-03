@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Method;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -199,7 +201,44 @@ public class DriverUnitTest {
 
     // D5 - Immutable Fields
     @Nested
-    class ImmutableFields{
+    class ImmutableFields {
+        String address = "124 | La Trobe St | Melbourne | Victoria | Australia";
+        String birthDate = "01-01-2001";
 
+        // Test Case 1 – driverID unchanged after construction
+        @Test
+        void GivenDriverID_ShouldReturnSameValue() {
+            String driver1ID = "34ab!!cdAB";
+            Driver driver1 = new Driver(driver1ID, "Aaron", 5, LicenseType.LIGHT, address, birthDate);
+            assertEquals(driver1ID, driver1.getDriverID());
+
+            String driver2ID = "34ab!!cdAC";
+            Driver driver2 = new Driver(driver2ID, "Alice", 5, LicenseType.LIGHT, address, birthDate);
+            assertEquals(driver2ID, driver2.getDriverID());
+        }
+
+        // Test Case 2 – name unchanged after construction
+        @Test
+        void GivenName_ShouldReturnSameValue() {
+            String driver1Name = "Aaron";
+            Driver driver1 = new Driver("34ab!!cdAB", driver1Name, 5, LicenseType.LIGHT, address, birthDate);
+            assertEquals(driver1Name, driver1.getName());
+
+            String driver2Name = "Alice";
+            Driver driver2 = new Driver("34ab!!cdAC", driver2Name, 5, LicenseType.LIGHT, address, birthDate);
+            assertEquals(driver2Name, driver2.getName());
+        }
+
+        @Test
+        void ShouldNotHave_DriverID_and_Name_Mutators(){
+            boolean hasMutableSetter = false;
+            for (Method m : Driver.class.getMethods()) {
+                if (m.getName().equals("setDriverID") || m.getName().equals("setName")) {
+                    hasMutableSetter = true;
+                    break;
+                }
+            }
+            assertFalse(hasMutableSetter);
+        }
     }
 }
