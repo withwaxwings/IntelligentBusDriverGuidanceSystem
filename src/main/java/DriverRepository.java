@@ -52,6 +52,11 @@ public class DriverRepository {
         return drivers.size();
     }
 
+    public void clear() {
+        drivers.clear();
+        saveToFile();
+    }
+
     private void saveToFile() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
             bw.write(HEADER);

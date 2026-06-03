@@ -50,6 +50,11 @@ public class BusRepository {
         return buses.size();
     }
 
+    public void clear() {
+        buses.clear();
+        saveToFile();
+    }
+
     private void saveToFile() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
             bw.write(HEADER);
