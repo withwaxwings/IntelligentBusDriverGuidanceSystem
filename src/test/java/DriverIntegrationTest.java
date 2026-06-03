@@ -18,7 +18,6 @@ public class DriverIntegrationTest {
         driverService = new DriverService(driverRepository);
     }
 
-    // DR1 - DriverRepository
     @Nested
     class DriverRepositoryTests {
         String address = "124 | La Trobe St | Melbourne | Victoria | Australia";
@@ -26,7 +25,7 @@ public class DriverIntegrationTest {
 
         // Test Case 1 – Add multiple drivers and retrieve each by ID
         @Test
-        void GivenMultipleDriversAdded_ShouldRetrieveEachById() {
+        void GivenMultipleDriversAdded_ShouldRetrieveById() {
             String driver1ID = "34ab!!cdAB";
             String driver2ID = "34ab!!cdAC";
             String driver3ID = "34ab!!cdAD";
@@ -36,13 +35,13 @@ public class DriverIntegrationTest {
             driverService.createDriver(driver3ID, "Alice", 7, LicenseType.MEDIUM, address, birthDate);
 
             assertNotNull(driverRepository.retrieve(driver1ID));
-            assertEquals(driver1ID, driverRepository.retrieve(driver1ID).getDriverID());
+            assertEquals("Aaron", driverRepository.retrieve(driver1ID).getName());
 
             assertNotNull(driverRepository.retrieve(driver2ID));
-            assertEquals(driver2ID, driverRepository.retrieve(driver2ID).getDriverID());
+            assertEquals("Alex", driverRepository.retrieve(driver2ID).getName());
 
             assertNotNull(driverRepository.retrieve(driver3ID));
-            assertEquals(driver3ID, driverRepository.retrieve(driver3ID).getDriverID());
+            assertEquals("Alice", driverRepository.retrieve(driver3ID).getName());
         }
 
         // Test Case 2 – Unique DriverID constraint
@@ -80,9 +79,9 @@ public class DriverIntegrationTest {
             assertEquals(newExperience, updated.getExperienceYears());
         }
 
-        // Test Case 4 – Repository count updates correctly after add
+        // Test Case 4 – Repository count updates after add
         @Test
-        void GivenDriverAdded_CountShouldIncreaseByOne() {
+        void GivenDriverAdded_ShouldIncreaseCount() {
             int before = driverRepository.count();
 
             driverService.createDriver("34ab!!cdAB", "Aaron", 4, LicenseType.HEAVY, address, birthDate);
