@@ -6,7 +6,7 @@ public class BusDriverRelationService {
         this.relationRepository = relationRepository;
     }
 
-    public static boolean isDriverEligible(Driver driver, Bus bus) {
+    public boolean isDriverEligible(Driver driver, Bus bus) {
         // drivers over 50 cannot drive bus with capacity of 50 or more
         if (driver.getAgeInYears() > 50 && bus.getCapacity() >= 50)
             return false;
