@@ -220,7 +220,7 @@ public class DriverUnitTest {
             assertEquals(driver1ID, driver1.getDriverID());
 
             String driver2ID = "34ab!!cdAC";
-            Driver driver2 = new Driver(driver2ID, "Alice", 5, LicenseType.LIGHT, address, birthDate);
+            Driver driver2 = new Driver(driver2ID, "Alex", 5, LicenseType.LIGHT, address, birthDate);
             assertEquals(driver2ID, driver2.getDriverID());
         }
 

@@ -47,6 +47,11 @@ public class BusDriverRelationRepository {
         return relations.size();
     }
 
+    public void clear() {
+        relations.clear();
+        saveToFile();
+    }
+
     private void saveToFile() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
             bw.write(HEADER);
