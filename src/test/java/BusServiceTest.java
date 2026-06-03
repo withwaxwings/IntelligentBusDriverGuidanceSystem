@@ -7,10 +7,6 @@ import org.junit.jupiter.api.Test;
 
 public class BusServiceTest {
     private final BusService busService = new BusService(new BusRepository());
-
-    // Already in BusUnitTest: isValidBusID, isValidCapacity, updateCapacity
-    // Remaining: isValidFuelLevel, updateFuelLevel, updateFuelType
-
     @Nested
     class ValidFuelLevel {
         // Test Case 1 - Valid Fuel Level
